@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<casestudy_subject xmlns="http://www.uwaterloo.ca/uw/star/sts/schema/CaseStudySubject">
+	<cs_subject>
+		<name>nanoxml</name>
+		<repository>SIR_JAVA</repository>
+		<test_type>tsl</test_type>
+		<fault_type>seeded</fault_type>
+		<language>java</language>
+		<sequential_versions>6</sequential_versions>
+		<size_loc>7646</size_loc>
+		<size_class>24</size_class>
+	</cs_subject>
+</casestudy_subject>

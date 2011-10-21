@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+	targetNamespace="http://www.uwaterloo.ca/uw/star/sts/schema/CaseStudySubject" xmlns:e="http://www.uwaterloo.ca/uw/star/sts/schema/CaseStudySubject">
+	 <xs:element name="casestudy_subject">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="e:cs_subject"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="cs_subject">	
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="name" type="xs:string"/>
+				<xs:element name="repository" type="xs:string"/>
+				<xs:element name="test_type" type="xs:string"/>
+				<xs:element name="fault_type" type="xs:string"/>
+				<xs:element name="language" type="xs:string"/>
+				<xs:element name="sequential_versions" type="xs:int"/>
+				<xs:element name="size_loc" type="xs:int"/>
+				<xs:element name="size_class" type="xs:int"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
