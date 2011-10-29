@@ -1,0 +1,10 @@
+Software Test Selection is a research area aimed at selecting a
+subset of test cases from exsiting test suite for regression testing. Many STS
+techniques have been proposed and evaluated , yet industry adoption is low. One of the challenges for a
+test enginner to apply STS technique is to determine which STS technique to use
+for the specific goal, process and product of the organization. Our proposed STS framework helps test engineers explictly express
+their test selection goals, systematically analyze software artifacts
+available in the development process, and select a STS technique provides the
+most benifits with lowest cost. This framework also helps the research
+community access to published STS techniques and reproduce the experiments or
+conduct new experiments.
