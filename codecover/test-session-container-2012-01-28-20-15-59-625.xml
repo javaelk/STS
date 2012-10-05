@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestSessionContainer xmlns="http://www.codecover.org/xml/testsession-container" Date="1327799759609" TestSessionContainerId="48510019-e022-4f61-a311-3364d9bad322" version="1.0">
+<SrcFileList>
+<SrcFile Content="package uw.star.sts.analysis;&#13;&#10;import java.util.*;&#13;&#10;import java.lang.Integer;&#13;&#10;import org.slf4j.*;&#13;&#10;import org.w3c.dom.*;&#13;&#10;&#13;&#10;import java.nio.file.*;&#13;&#10;import uw.star.sts.artifact.*;&#13;&#10;import uw.star.sts.artifact.Entity;&#13;&#10;import uw.star.sts.util.*;&#13;&#10;&#13;&#10;&#13;&#10;/**&#13;&#10; * Parse EMMA xml result file and extract useful information&#13;&#10; * @author Weining Liu&#13;&#10; *&#13;&#10; */&#13;&#10;public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {&#13;&#10;    &#13;&#10;&#9;/**&#13;&#10;&#9; * @uml.property  name=&quot;file&quot;&#13;&#10;&#9; */&#13;&#10;&#9;Path file;&#13;&#10;&#9;/**&#13;&#10;&#9; * @uml.property  name=&quot;p&quot;&#13;&#10;&#9; * @uml.associationEnd  readOnly=&quot;true&quot;&#13;&#10;&#9; */&#13;&#10;&#9;Program program;&#13;&#10;&#9;/**&#13;&#10;&#9; * @uml.property  name=&quot;log&quot;&#13;&#10;&#9; * @uml.associationEnd  multiplicity=&quot;(1 1)&quot;&#13;&#10;&#9; */&#13;&#10;&#9;Logger log;&#13;&#10;&#9;public EmmaCodeCoverageAnalyzer(Program p,Path resultXMLfile){&#13;&#10;&#9;&#9;file = resultXMLfile;&#13;&#10;&#9;&#9;log = LoggerFactory.getLogger(EmmaCodeCoverageAnalyzer.class.getName());&#13;&#10;&#9;&#9;this.program =p;&#13;&#10;&#9;&#9;&#13;&#10;&#9;}&#13;&#10;&#9;&#13;&#10;&#9;/**&#13;&#10;&#9; *    Entity is considered as covered if value &gt;0%&#13;&#10;&#9; *    Example of covered method in Emma xml report&#13;&#10;&#9; *    &lt;method name=&quot;&amp;lt;static initializer&amp;gt;&quot;&gt;&#13;&#10;            &lt;coverage type=&quot;method, %&quot; value=&quot;100% (1/1)&quot;/&gt;&#13;&#10;            &lt;coverage type=&quot;block, %&quot; value=&quot;100% (6/6)&quot;/&gt;&#13;&#10;          &lt;/method&gt;&#13;&#10;&#9; &#13;&#10;&#9; * Let Ec denote the set of covered entities&#13;&#10;&#9; * Ec = { e in E | (exist t in T)(t covers e)} &#13;&#10;&#9; * For every e in E, there must exist a t that executing t on P causes entity e &#13;&#10;&#9; * to be exercised at least once&#13;&#10;&#9; *  &#13;&#10;&#9; * @param testcase t&#13;&#10;&#9; * @return list of entities execericsed by executing t on P&#13;&#10;&#9; */&#13;&#10;&#9;public List&lt;Entity&gt; extractCoveredEntities(EntityType type){&#13;&#10;&#9;&#9;return extractEntities(type,false);&#13;&#10;&#9;}&#13;&#10;&#9;&#13;&#10;&#9;/**&#13;&#10;&#9; * Parse test case name from the result file name&#13;&#10;&#9; * coverage.testcasename.xml&#13;&#10;&#9; * @return&#13;&#10;&#9; */&#13;&#10;&#9;public String extractTestCaseName(){&#13;&#10;&#9;&#9;//log.debug(&quot;file name is :&quot;+ file.getFileName().toString());&#13;&#10;&#9;&#9;String filename = file.getFileName().toString();&#13;&#10;&#9;&#9;String tcName = filename.substring(filename.indexOf(&quot;.&quot;)+1,filename.lastIndexOf(&quot;.&quot;));&#13;&#10;&#9;&#9;//log.debug(&quot;test case name is: &quot;+ tcName);&#13;&#10;&#9;&#9;return tcName;&#13;&#10;&#9;}&#13;&#10;&#13;&#10;&#9;/**&#13;&#10;&#9; * getAllEntities is implemented as a special case of getCoveredEntities. Basically, just get entities with &gt;0% coverage and =0% coverage&#13;&#10;&#9; * @param type&#13;&#10;&#9; * @return&#13;&#10;&#9; */&#13;&#10;&#9;public List&lt;Entity&gt; extractAllEntities(EntityType type){&#13;&#10;&#9;&#9;return extractEntities(type,true);&#13;&#10;&#9;}&#13;&#10;&#13;&#10;&#9;/**&#13;&#10;&#9; * helper method to reuse code for getCoveredEntities and getAllEntities&#13;&#10;&#9; * @param type&#13;&#10;&#9; * @param getall&#13;&#10;&#9; * @return&#13;&#10;&#9; */&#13;&#10;&#9;&#13;&#10;&#9;private List&lt;Entity&gt; extractEntities(EntityType type,boolean getall){&#13;&#10;&#9;&#9;//@Refactoring: use a set instead of list in order maintain uniqueness in the list of entities &#13;&#10;&#9;&#9;//(i.e. should not return duplicate class entity or duplicate method entities&#13;&#10;&#9;&#9;Set &lt;Entity&gt; entities = new HashSet();&#13;&#10;&#9;&#9;Document emmaReport = XMLUtility.DocumentFactory(file);&#13;&#10;&#13;&#10;&#9;&#9;//iterate each package&#13;&#10;&#9;&#9;NodeList packageNodes = emmaReport.getElementsByTagName(&quot;package&quot;);&#13;&#10;&#9;&#9;for(int i=0;i&lt;packageNodes.getLength();i++){&#13;&#10;&#9;&#9;&#9;Node packageNode = packageNodes.item(i); &#13;&#10;&#9;&#9;&#9;if(packageNode.getNodeType() == Node.ELEMENT_NODE){&#13;&#10;&#9;&#9;&#9;&#9;String packageName = ((Element)packageNode).getAttribute(&quot;name&quot;);&#13;&#10;&#9;&#9;&#9;&#9;//log.debug(&quot;package name&quot; + packageName);&#13;&#10;&#13;&#10;&#9;&#9;&#9;&#9;//get all class nodes under this package node&#13;&#10;&#9;&#9;&#9;&#9;for(Node classNode: XMLUtility.getChildElementsByTagName(packageNode, &quot;class&quot;)){&#13;&#10;&#9;&#9;&#9;&#9;&#9;String className = ((Element)classNode).getAttribute(&quot;name&quot;);&#13;&#10;&#9;&#9;&#9;&#9;&#9;//log.debug(&quot;class name&quot; + className);&#13;&#10;&#9;&#9;&#9;&#9;&#9;if(type==EntityType.CLASS){&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;if(getall){&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;if(!entities.add(new ClassEntity(program,packageName,className)))&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;log.error(&quot;Tried to insert duplicate class entity :&quot; + program + packageName+className);&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;}else{//only get covered, need to check coverage value&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;if(extractCoverageValue(classNode,&quot;class, %&quot;)&gt;0){&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;log.debug(&quot;class &quot; + packageName + &quot;.&quot; + className + &quot; is covered&quot;);&#9;&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;if(!entities.add(new ClassEntity(program,packageName,className)))&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;log.error(&quot;Tried to insert duplicate class entity :&quot; + program + packageName+className);&#13;&#10;&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;}&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;}&#13;&#10;&#9;&#9;&#9;&#9;&#9;}else if(type==EntityType.METHOD){&#13;&#10;&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;//get all methods under this class node&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;for(Node methodNode: XMLUtility.getChildElementsByTagName(classNode, &quot;method&quot;)){&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;String methodName = ((Element)methodNode).getAttribute(&quot;name&quot;);&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;//&#9;&#9;log.debug(&quot;method name&quot; + methodName);&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;if(getall){&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;if(!entities.add(new MethodEntity(program,packageName,className,methodName)))&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;log.error(&quot;Tried to insert duplicate method entity :&quot; + program + packageName+className+methodName);&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;}else{&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;if(extractCoverageValue(methodNode,&quot;method, %&quot;)&gt;0){&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;log.debug(&quot;method &quot; +  packageName + &quot;.&quot; + className + &quot;.&quot; + methodName +&quot; is covered&quot;);&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;if(!entities.add(new MethodEntity(program,packageName,className,methodName)))&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;log.error(&quot;Tried to insert duplicate method entity :&quot; + program + packageName+className+methodName);&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;}&#9;&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;&#9;}&#13;&#10;&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;}&#13;&#10;&#9;&#9;&#9;&#9;&#9;}else{&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;log.error(&quot;unknown entity type&quot;+ type);&#13;&#10;&#9;&#9;&#9;&#9;&#9;}&#13;&#10;&#9;&#9;&#9;&#9;}&#13;&#10;&#9;&#9;&#9;}&#13;&#10;&#9;&#9;}&#13;&#10;&#13;&#10;&#9;&#9;return new ArrayList&lt;Entity&gt;(entities);&#13;&#10;&#9;}&#13;&#10;&#13;&#10;&#9;/**&#13;&#10;&#9; * find coverage node directly under current node and parse coverage value of type given&#13;&#10;&#9; * @param current node&#13;&#10;&#9; * @param type - class,method or block&#13;&#10;&#9; * @return integer value of the coverage, -1 if coverage value of the type not found&#13;&#10;&#9; */&#13;&#10;&#9;private int extractCoverageValue(Node currentNode,String type){&#13;&#10;&#9;&#9;for(Node coverageNode: XMLUtility.getChildElementsByTagName(currentNode, &quot;coverage&quot;)){&#13;&#10;&#9;&#9;&#9;if(((Element)coverageNode).getAttribute(&quot;type&quot;).equals(type)){&#13;&#10;&#9;&#9;&#9;&#9;String coverageValue = ((Element)coverageNode).getAttribute(&quot;value&quot;);&#13;&#10;&#9;&#9;&#9;&#9;int value = Integer.parseInt(coverageValue.substring(0, coverageValue.indexOf(&quot;%&quot;)));&#13;&#10;&#9;&#9;&#9;&#9;return value;&#13;&#10;&#9;&#9;&#9;}&#13;&#10;&#9;&#9;}&#13;&#10;&#9;&#9;return -1;&#13;&#10;&#9;}&#13;&#10;&#13;&#10;&#9;&#13;&#10;}&#13;&#10;&#13;&#10;" Filename="EmmaCodeCoverageAnalyzer.java" Intrnl_Id="1"/>
+</SrcFileList>
+<CritList>
+<CritListEntry Name="org.codecover.model.utils.criteria.BranchCoverage" PluginName="org.codecover"/>
+</CritList>
+<BoolOpList/>
+<HierarchyLvlTypeList>
+<HierarchyLvlType EnglishName="package" IntrnlName="package" Intrnl_Id="2"/>
+<HierarchyLvlType EnglishName="class" IntrnlName="class" Intrnl_Id="3"/>
+<HierarchyLvlType EnglishName="method" IntrnlName="method" Intrnl_Id="4"/>
+<HierarchyLvlType EnglishName="default package" IntrnlName="default package" Intrnl_Id="5"/>
+</HierarchyLvlTypeList>
+<MASTRoot>
+<HierarchyLvl HierarchyLvlId="16" HierarchyLvlTypeId="5" Intrnl_Id="6" Name="default package">
+<Header/>
+<LocList/>
+<HierarchyLvl HierarchyLvlId="15" HierarchyLvlTypeId="2" Intrnl_Id="7" Name="uw">
+<Header/>
+<LocList/>
+<HierarchyLvl HierarchyLvlId="14" HierarchyLvlTypeId="2" Intrnl_Id="8" Name="star">
+<Header/>
+<LocList/>
+<HierarchyLvl HierarchyLvlId="13" HierarchyLvlTypeId="2" Intrnl_Id="9" Name="sts">
+<Header/>
+<LocList/>
+<HierarchyLvl HierarchyLvlId="12" HierarchyLvlTypeId="2" Intrnl_Id="10" Name="analysis">
+<Header/>
+<LocList/>
+<HierarchyLvl HierarchyLvlId="11" HierarchyLvlTypeId="3" Intrnl_Id="11" Name="EmmaCodeCoverageAnalyzer">
+<Header>
+<Loc EndOffset="417" SrcFileId="1" StartOffset="351"/>
+</Header>
+<LocList>
+<Loc EndOffset="5822" SrcFileId="1" StartOffset="351"/>
+</LocList>
+<HierarchyLvl HierarchyLvlId="5" HierarchyLvlTypeId="4" Intrnl_Id="12" Name="EmmaCodeCoverageAnalyzer">
+<Header>
+<Loc EndOffset="752" SrcFileId="1" StartOffset="691"/>
+</Header>
+<LocList>
+<Loc EndOffset="882" SrcFileId="1" StartOffset="691"/>
+</LocList>
+<StmntSeq Intrnl_Id="13">
+<LocList>
+<Loc EndOffset="778" SrcFileId="1" StartOffset="757"/>
+<Loc EndOffset="854" SrcFileId="1" StartOffset="782"/>
+<Loc EndOffset="874" SrcFileId="1" StartOffset="858"/>
+</LocList>
+<BasicStmnt CovItemId="S1" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="14">
+<LocList>
+<Loc EndOffset="778" SrcFileId="1" StartOffset="757"/>
+</LocList>
+</BasicStmnt>
+<BasicStmnt CovItemId="S2" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="15">
+<LocList>
+<Loc EndOffset="854" SrcFileId="1" StartOffset="782"/>
+</LocList>
+</BasicStmnt>
+<BasicStmnt CovItemId="S3" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="16">
+<LocList>
+<Loc EndOffset="874" SrcFileId="1" StartOffset="858"/>
+</LocList>
+</BasicStmnt>
+</StmntSeq>
+</HierarchyLvl>
+<HierarchyLvl HierarchyLvlId="6" HierarchyLvlTypeId="4" Intrnl_Id="17" Name="extractCoveredEntities">
+<Header>
+<Loc EndOffset="1569" SrcFileId="1" StartOffset="1510"/>
+</Header>
+<LocList>
+<Loc EndOffset="1613" SrcFileId="1" StartOffset="1510"/>
+</LocList>
+<StmntSeq Intrnl_Id="18">
+<LocList>
+<Loc EndOffset="1609" SrcFileId="1" StartOffset="1574"/>
+</LocList>
+<BasicStmnt CovItemId="S4" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="19">
+<LocList>
+<Loc EndOffset="1609" SrcFileId="1" StartOffset="1574"/>
+</LocList>
+</BasicStmnt>
+</StmntSeq>
+</HierarchyLvl>
+<HierarchyLvl HierarchyLvlId="7" HierarchyLvlTypeId="4" Intrnl_Id="20" Name="extractTestCaseName">
+<Header>
+<Loc EndOffset="1762" SrcFileId="1" StartOffset="1727"/>
+</Header>
+<LocList>
+<Loc EndOffset="2039" SrcFileId="1" StartOffset="1727"/>
+</LocList>
+<StmntSeq Intrnl_Id="21">
+<LocList>
+<Loc EndOffset="1880" SrcFileId="1" StartOffset="1832"/>
+<Loc EndOffset="1970" SrcFileId="1" StartOffset="1884"/>
+<Loc EndOffset="2035" SrcFileId="1" StartOffset="2021"/>
+</LocList>
+<BasicStmnt CovItemId="S5" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="22">
+<LocList>
+<Loc EndOffset="1880" SrcFileId="1" StartOffset="1832"/>
+</LocList>
+</BasicStmnt>
+<BasicStmnt CovItemId="S6" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="23">
+<LocList>
+<Loc EndOffset="1970" SrcFileId="1" StartOffset="1884"/>
+</LocList>
+</BasicStmnt>
+<BasicStmnt CovItemId="S7" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="24">
+<LocList>
+<Loc EndOffset="2035" SrcFileId="1" StartOffset="2021"/>
+</LocList>
+</BasicStmnt>
+</StmntSeq>
+</HierarchyLvl>
+<HierarchyLvl HierarchyLvlId="8" HierarchyLvlTypeId="4" Intrnl_Id="25" Name="extractAllEntities">
+<Header>
+<Loc EndOffset="2281" SrcFileId="1" StartOffset="2226"/>
+</Header>
+<LocList>
+<Loc EndOffset="2324" SrcFileId="1" StartOffset="2226"/>
+</LocList>
+<StmntSeq Intrnl_Id="26">
+<LocList>
+<Loc EndOffset="2320" SrcFileId="1" StartOffset="2286"/>
+</LocList>
+<BasicStmnt CovItemId="S8" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="27">
+<LocList>
+<Loc EndOffset="2320" SrcFileId="1" StartOffset="2286"/>
+</LocList>
+</BasicStmnt>
+</StmntSeq>
+</HierarchyLvl>
+<HierarchyLvl HierarchyLvlId="9" HierarchyLvlTypeId="4" Intrnl_Id="28" Name="extractEntities">
+<Header>
+<Loc EndOffset="2536" SrcFileId="1" StartOffset="2468"/>
+</Header>
+<LocList>
+<Loc EndOffset="5119" SrcFileId="1" StartOffset="2468"/>
+</LocList>
+<StmntSeq Intrnl_Id="29">
+<LocList>
+<Loc EndOffset="2759" SrcFileId="1" StartOffset="2721"/>
+<Loc EndOffset="2818" SrcFileId="1" StartOffset="2763"/>
+<Loc EndOffset="2917" SrcFileId="1" StartOffset="2850"/>
+<Loc EndOffset="5070" SrcFileId="1" StartOffset="2921"/>
+<Loc EndOffset="5115" SrcFileId="1" StartOffset="5076"/>
+</LocList>
+<BasicStmnt CovItemId="S9" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="30">
+<LocList>
+<Loc EndOffset="2759" SrcFileId="1" StartOffset="2721"/>
+</LocList>
+</BasicStmnt>
+<BasicStmnt CovItemId="S10" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="31">
+<LocList>
+<Loc EndOffset="2818" SrcFileId="1" StartOffset="2763"/>
+</LocList>
+</BasicStmnt>
+<BasicStmnt CovItemId="S11" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="32">
+<LocList>
+<Loc EndOffset="2917" SrcFileId="1" StartOffset="2850"/>
+</LocList>
+</BasicStmnt>
+<LoopStmnt CovItemId="S12" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="33" MltplExecId="L1-2" MltplExecPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" NvrExecId="L1-0" NvrExecPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" OnceExecutedId="L1-1" OnceExecutedPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" OptBodyExec="true">
+<StmntSeq Intrnl_Id="34">
+<LocList>
+<Loc EndOffset="3010" SrcFileId="1" StartOffset="2970"/>
+<Loc EndOffset="5065" SrcFileId="1" StartOffset="3016"/>
+</LocList>
+<BasicStmnt CovItemId="S13" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="35">
+<LocList>
+<Loc EndOffset="3010" SrcFileId="1" StartOffset="2970"/>
+</LocList>
+</BasicStmnt>
+<CondStmnt CovItemId="S14" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="36">
+<Branch CovItemId="B1" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="37">
+<Cond/>
+<LocList>
+<Loc EndOffset="5065" SrcFileId="1" StartOffset="3066"/>
+</LocList>
+<StmntSeq Intrnl_Id="38">
+<LocList>
+<Loc EndOffset="3138" SrcFileId="1" StartOffset="3073"/>
+<Loc EndOffset="5059" SrcFileId="1" StartOffset="3245"/>
+</LocList>
+<BasicStmnt CovItemId="S15" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="39">
+<LocList>
+<Loc EndOffset="3138" SrcFileId="1" StartOffset="3073"/>
+</LocList>
+</BasicStmnt>
+<LoopStmnt CovItemId="S16" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="40" MltplExecId="L2-2" MltplExecPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" NvrExecId="L2-0" NvrExecPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" OnceExecutedId="L2-1" OnceExecutedPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" OptBodyExec="true">
+<StmntSeq Intrnl_Id="41">
+<LocList>
+<Loc EndOffset="3393" SrcFileId="1" StartOffset="3332"/>
+<Loc EndOffset="5052" SrcFileId="1" StartOffset="3445"/>
+</LocList>
+<BasicStmnt CovItemId="S17" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="42">
+<LocList>
+<Loc EndOffset="3393" SrcFileId="1" StartOffset="3332"/>
+</LocList>
+</BasicStmnt>
+<CondStmnt CovItemId="S18" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="43">
+<Branch CovItemId="B3" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="44">
+<Cond/>
+<LocList>
+<Loc EndOffset="4065" SrcFileId="1" StartOffset="3471"/>
+</LocList>
+<StmntSeq Intrnl_Id="45">
+<LocList>
+<Loc EndOffset="4057" SrcFileId="1" StartOffset="3480"/>
+</LocList>
+<CondStmnt CovItemId="S19" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="46">
+<Branch CovItemId="B5" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="47">
+<Cond/>
+<LocList>
+<Loc EndOffset="3672" SrcFileId="1" StartOffset="3490"/>
+</LocList>
+<StmntSeq Intrnl_Id="48">
+<LocList>
+<Loc EndOffset="3663" SrcFileId="1" StartOffset="3500"/>
+</LocList>
+<CondStmnt CovItemId="S20" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="49">
+<Branch CovItemId="B7" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="50">
+<Cond/>
+<LocList>
+<Loc EndOffset="3663" SrcFileId="1" StartOffset="3575"/>
+</LocList>
+<StmntSeq Intrnl_Id="51">
+<LocList>
+<Loc EndOffset="3663" SrcFileId="1" StartOffset="3575"/>
+</LocList>
+<BasicStmnt CovItemId="S21" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="52">
+<LocList>
+<Loc EndOffset="3663" SrcFileId="1" StartOffset="3575"/>
+</LocList>
+</BasicStmnt>
+</StmntSeq>
+</Branch>
+<Branch CovItemId="B8" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="true" Intrnl_Id="53">
+<Cond/>
+<LocList/>
+<StmntSeq Intrnl_Id="54">
+<LocList/>
+</StmntSeq>
+</Branch>
+<Keyword EndOffset="3502" SrcFileId="1" StartOffset="3500"/>
+<LocList>
+<Loc EndOffset="3663" SrcFileId="1" StartOffset="3500"/>
+</LocList>
+</CondStmnt>
+</StmntSeq>
+</Branch>
+<Branch CovItemId="B6" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="55">
+<Cond>
+<Loc EndOffset="3676" SrcFileId="1" StartOffset="3672"/>
+</Cond>
+<LocList>
+<Loc EndOffset="4057" SrcFileId="1" StartOffset="3676"/>
+</LocList>
+<StmntSeq Intrnl_Id="56">
+<LocList>
+<Loc EndOffset="4048" SrcFileId="1" StartOffset="3734"/>
+</LocList>
+<CondStmnt CovItemId="S22" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="57">
+<Branch CovItemId="B9" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="58">
+<Cond/>
+<LocList>
+<Loc EndOffset="4048" SrcFileId="1" StartOffset="3782"/>
+</LocList>
+<StmntSeq Intrnl_Id="59">
+<LocList>
+<Loc EndOffset="3861" SrcFileId="1" StartOffset="3793"/>
+<Loc EndOffset="4036" SrcFileId="1" StartOffset="3872"/>
+</LocList>
+<BasicStmnt CovItemId="S23" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="60">
+<LocList>
+<Loc EndOffset="3861" SrcFileId="1" StartOffset="3793"/>
+</LocList>
+</BasicStmnt>
+<CondStmnt CovItemId="S24" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="61">
+<Branch CovItemId="B11" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="62">
+<Cond/>
+<LocList>
+<Loc EndOffset="4036" SrcFileId="1" StartOffset="3948"/>
+</LocList>
+<StmntSeq Intrnl_Id="63">
+<LocList>
+<Loc EndOffset="4036" SrcFileId="1" StartOffset="3948"/>
+</LocList>
+<BasicStmnt CovItemId="S25" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="64">
+<LocList>
+<Loc EndOffset="4036" SrcFileId="1" StartOffset="3948"/>
+</LocList>
+</BasicStmnt>
+</StmntSeq>
+</Branch>
+<Branch CovItemId="B12" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="true" Intrnl_Id="65">
+<Cond/>
+<LocList/>
+<StmntSeq Intrnl_Id="66">
+<LocList/>
+</StmntSeq>
+</Branch>
+<Keyword EndOffset="3874" SrcFileId="1" StartOffset="3872"/>
+<LocList>
+<Loc EndOffset="4036" SrcFileId="1" StartOffset="3872"/>
+</LocList>
+</CondStmnt>
+</StmntSeq>
+</Branch>
+<Branch CovItemId="B10" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="true" Intrnl_Id="67">
+<Cond/>
+<LocList/>
+<StmntSeq Intrnl_Id="68">
+<LocList/>
+</StmntSeq>
+</Branch>
+<Keyword EndOffset="3736" SrcFileId="1" StartOffset="3734"/>
+<LocList>
+<Loc EndOffset="4048" SrcFileId="1" StartOffset="3734"/>
+</LocList>
+</CondStmnt>
+</StmntSeq>
+</Branch>
+<Keyword EndOffset="3482" SrcFileId="1" StartOffset="3480"/>
+<LocList>
+<Loc EndOffset="4057" SrcFileId="1" StartOffset="3480"/>
+</LocList>
+</CondStmnt>
+</StmntSeq>
+</Branch>
+<Branch CovItemId="B4" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="69">
+<Cond>
+<Loc EndOffset="4069" SrcFileId="1" StartOffset="4065"/>
+</Cond>
+<LocList>
+<Loc EndOffset="5052" SrcFileId="1" StartOffset="4070"/>
+</LocList>
+<StmntSeq Intrnl_Id="70">
+<LocList>
+<Loc EndOffset="5052" SrcFileId="1" StartOffset="4070"/>
+</LocList>
+<CondStmnt CovItemId="S26" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="71">
+<Branch CovItemId="B13" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="72">
+<Cond/>
+<LocList>
+<Loc EndOffset="4992" SrcFileId="1" StartOffset="4097"/>
+</LocList>
+<StmntSeq Intrnl_Id="73">
+<LocList>
+<Loc EndOffset="4984" SrcFileId="1" StartOffset="4155"/>
+</LocList>
+<LoopStmnt CovItemId="S27" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="74" MltplExecId="L3-2" MltplExecPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" NvrExecId="L3-0" NvrExecPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" OnceExecutedId="L3-1" OnceExecutedPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" OptBodyExec="true">
+<StmntSeq Intrnl_Id="75">
+<LocList>
+<Loc EndOffset="4307" SrcFileId="1" StartOffset="4244"/>
+<Loc EndOffset="4973" SrcFileId="1" StartOffset="4367"/>
+</LocList>
+<BasicStmnt CovItemId="S28" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="76">
+<LocList>
+<Loc EndOffset="4307" SrcFileId="1" StartOffset="4244"/>
+</LocList>
+</BasicStmnt>
+<CondStmnt CovItemId="S29" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="77">
+<Branch CovItemId="B15" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="78">
+<Cond/>
+<LocList>
+<Loc EndOffset="4586" SrcFileId="1" StartOffset="4377"/>
+</LocList>
+<StmntSeq Intrnl_Id="79">
+<LocList>
+<Loc EndOffset="4576" SrcFileId="1" StartOffset="4388"/>
+</LocList>
+<CondStmnt CovItemId="S30" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="80">
+<Branch CovItemId="B17" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="81">
+<Cond/>
+<LocList>
+<Loc EndOffset="4576" SrcFileId="1" StartOffset="4476"/>
+</LocList>
+<StmntSeq Intrnl_Id="82">
+<LocList>
+<Loc EndOffset="4576" SrcFileId="1" StartOffset="4476"/>
+</LocList>
+<BasicStmnt CovItemId="S31" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="83">
+<LocList>
+<Loc EndOffset="4576" SrcFileId="1" StartOffset="4476"/>
+</LocList>
+</BasicStmnt>
+</StmntSeq>
+</Branch>
+<Branch CovItemId="B18" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="true" Intrnl_Id="84">
+<Cond/>
+<LocList/>
+<StmntSeq Intrnl_Id="85">
+<LocList/>
+</StmntSeq>
+</Branch>
+<Keyword EndOffset="4390" SrcFileId="1" StartOffset="4388"/>
+<LocList>
+<Loc EndOffset="4576" SrcFileId="1" StartOffset="4388"/>
+</LocList>
+</CondStmnt>
+</StmntSeq>
+</Branch>
+<Branch CovItemId="B16" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="86">
+<Cond>
+<Loc EndOffset="4590" SrcFileId="1" StartOffset="4586"/>
+</Cond>
+<LocList>
+<Loc EndOffset="4973" SrcFileId="1" StartOffset="4590"/>
+</LocList>
+<StmntSeq Intrnl_Id="87">
+<LocList>
+<Loc EndOffset="4962" SrcFileId="1" StartOffset="4601"/>
+</LocList>
+<CondStmnt CovItemId="S32" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="88">
+<Branch CovItemId="B19" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="89">
+<Cond/>
+<LocList>
+<Loc EndOffset="4962" SrcFileId="1" StartOffset="4651"/>
+</LocList>
+<StmntSeq Intrnl_Id="90">
+<LocList>
+<Loc EndOffset="4751" SrcFileId="1" StartOffset="4663"/>
+<Loc EndOffset="4951" SrcFileId="1" StartOffset="4762"/>
+</LocList>
+<BasicStmnt CovItemId="S33" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="91">
+<LocList>
+<Loc EndOffset="4751" SrcFileId="1" StartOffset="4663"/>
+</LocList>
+</BasicStmnt>
+<CondStmnt CovItemId="S34" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="92">
+<Branch CovItemId="B21" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="93">
+<Cond/>
+<LocList>
+<Loc EndOffset="4951" SrcFileId="1" StartOffset="4851"/>
+</LocList>
+<StmntSeq Intrnl_Id="94">
+<LocList>
+<Loc EndOffset="4951" SrcFileId="1" StartOffset="4851"/>
+</LocList>
+<BasicStmnt CovItemId="S35" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="95">
+<LocList>
+<Loc EndOffset="4951" SrcFileId="1" StartOffset="4851"/>
+</LocList>
+</BasicStmnt>
+</StmntSeq>
+</Branch>
+<Branch CovItemId="B22" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="true" Intrnl_Id="96">
+<Cond/>
+<LocList/>
+<StmntSeq Intrnl_Id="97">
+<LocList/>
+</StmntSeq>
+</Branch>
+<Keyword EndOffset="4764" SrcFileId="1" StartOffset="4762"/>
+<LocList>
+<Loc EndOffset="4951" SrcFileId="1" StartOffset="4762"/>
+</LocList>
+</CondStmnt>
+</StmntSeq>
+</Branch>
+<Branch CovItemId="B20" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="true" Intrnl_Id="98">
+<Cond/>
+<LocList/>
+<StmntSeq Intrnl_Id="99">
+<LocList/>
+</StmntSeq>
+</Branch>
+<Keyword EndOffset="4603" SrcFileId="1" StartOffset="4601"/>
+<LocList>
+<Loc EndOffset="4962" SrcFileId="1" StartOffset="4601"/>
+</LocList>
+</CondStmnt>
+</StmntSeq>
+</Branch>
+<Keyword EndOffset="4369" SrcFileId="1" StartOffset="4367"/>
+<LocList>
+<Loc EndOffset="4973" SrcFileId="1" StartOffset="4367"/>
+</LocList>
+</CondStmnt>
+</StmntSeq>
+<Keyword EndOffset="4158" SrcFileId="1" StartOffset="4155"/>
+<LocList>
+<Loc EndOffset="4984" SrcFileId="1" StartOffset="4155"/>
+</LocList>
+</LoopStmnt>
+</StmntSeq>
+</Branch>
+<Branch CovItemId="B14" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="100">
+<Cond>
+<Loc EndOffset="4996" SrcFileId="1" StartOffset="4992"/>
+</Cond>
+<LocList>
+<Loc EndOffset="5052" SrcFileId="1" StartOffset="4996"/>
+</LocList>
+<StmntSeq Intrnl_Id="101">
+<LocList>
+<Loc EndOffset="5044" SrcFileId="1" StartOffset="5005"/>
+</LocList>
+<BasicStmnt CovItemId="S36" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="102">
+<LocList>
+<Loc EndOffset="5044" SrcFileId="1" StartOffset="5005"/>
+</LocList>
+</BasicStmnt>
+</StmntSeq>
+</Branch>
+<Keyword EndOffset="4072" SrcFileId="1" StartOffset="4070"/>
+<LocList>
+<Loc EndOffset="5052" SrcFileId="1" StartOffset="4070"/>
+</LocList>
+</CondStmnt>
+</StmntSeq>
+</Branch>
+<Keyword EndOffset="3447" SrcFileId="1" StartOffset="3445"/>
+<LocList>
+<Loc EndOffset="5052" SrcFileId="1" StartOffset="3445"/>
+</LocList>
+</CondStmnt>
+</StmntSeq>
+<Keyword EndOffset="3248" SrcFileId="1" StartOffset="3245"/>
+<LocList>
+<Loc EndOffset="5059" SrcFileId="1" StartOffset="3245"/>
+</LocList>
+</LoopStmnt>
+</StmntSeq>
+</Branch>
+<Branch CovItemId="B2" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="true" Intrnl_Id="103">
+<Cond/>
+<LocList/>
+<StmntSeq Intrnl_Id="104">
+<LocList/>
+</StmntSeq>
+</Branch>
+<Keyword EndOffset="3018" SrcFileId="1" StartOffset="3016"/>
+<LocList>
+<Loc EndOffset="5065" SrcFileId="1" StartOffset="3016"/>
+</LocList>
+</CondStmnt>
+</StmntSeq>
+<Keyword EndOffset="2924" SrcFileId="1" StartOffset="2921"/>
+<LocList>
+<Loc EndOffset="5070" SrcFileId="1" StartOffset="2921"/>
+</LocList>
+</LoopStmnt>
+<BasicStmnt CovItemId="S37" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="105">
+<LocList>
+<Loc EndOffset="5115" SrcFileId="1" StartOffset="5076"/>
+</LocList>
+</BasicStmnt>
+</StmntSeq>
+</HierarchyLvl>
+<HierarchyLvl HierarchyLvlId="10" HierarchyLvlTypeId="4" Intrnl_Id="106" Name="extractCoverageValue">
+<Header>
+<Loc EndOffset="5442" SrcFileId="1" StartOffset="5380"/>
+</Header>
+<LocList>
+<Loc EndOffset="5814" SrcFileId="1" StartOffset="5380"/>
+</LocList>
+<StmntSeq Intrnl_Id="107">
+<LocList>
+<Loc EndOffset="5796" SrcFileId="1" StartOffset="5447"/>
+<Loc EndOffset="5810" SrcFileId="1" StartOffset="5800"/>
+</LocList>
+<LoopStmnt CovItemId="S38" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="108" MltplExecId="L4-2" MltplExecPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" NvrExecId="L4-0" NvrExecPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" OnceExecutedId="L4-1" OnceExecutedPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" OptBodyExec="true">
+<StmntSeq Intrnl_Id="109">
+<LocList>
+<Loc EndOffset="5791" SrcFileId="1" StartOffset="5538"/>
+</LocList>
+<CondStmnt CovItemId="S39" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="110">
+<Branch CovItemId="B23" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="false" Intrnl_Id="111">
+<Cond/>
+<LocList>
+<Loc EndOffset="5791" SrcFileId="1" StartOffset="5599"/>
+</LocList>
+<StmntSeq Intrnl_Id="112">
+<LocList>
+<Loc EndOffset="5675" SrcFileId="1" StartOffset="5606"/>
+<Loc EndOffset="5766" SrcFileId="1" StartOffset="5681"/>
+<Loc EndOffset="5785" SrcFileId="1" StartOffset="5772"/>
+</LocList>
+<BasicStmnt CovItemId="S40" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="113">
+<LocList>
+<Loc EndOffset="5675" SrcFileId="1" StartOffset="5606"/>
+</LocList>
+</BasicStmnt>
+<BasicStmnt CovItemId="S41" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="114">
+<LocList>
+<Loc EndOffset="5766" SrcFileId="1" StartOffset="5681"/>
+</LocList>
+</BasicStmnt>
+<BasicStmnt CovItemId="S42" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="115">
+<LocList>
+<Loc EndOffset="5785" SrcFileId="1" StartOffset="5772"/>
+</LocList>
+</BasicStmnt>
+</StmntSeq>
+</Branch>
+<Branch CovItemId="B24" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Implct="true" Intrnl_Id="116">
+<Cond/>
+<LocList/>
+<StmntSeq Intrnl_Id="117">
+<LocList/>
+</StmntSeq>
+</Branch>
+<Keyword EndOffset="5540" SrcFileId="1" StartOffset="5538"/>
+<LocList>
+<Loc EndOffset="5791" SrcFileId="1" StartOffset="5538"/>
+</LocList>
+</CondStmnt>
+</StmntSeq>
+<Keyword EndOffset="5450" SrcFileId="1" StartOffset="5447"/>
+<LocList>
+<Loc EndOffset="5796" SrcFileId="1" StartOffset="5447"/>
+</LocList>
+</LoopStmnt>
+<BasicStmnt CovItemId="S43" CovItemPrefix="uw.star.sts.analysis.EmmaCodeCoverageAnalyzer.java" Intrnl_Id="118">
+<LocList>
+<Loc EndOffset="5810" SrcFileId="1" StartOffset="5800"/>
+</LocList>
+</BasicStmnt>
+</StmntSeq>
+</HierarchyLvl>
+</HierarchyLvl>
+</HierarchyLvl>
+</HierarchyLvl>
+</HierarchyLvl>
+</HierarchyLvl>
+</HierarchyLvl>
+</MASTRoot>
+</TestSessionContainer>

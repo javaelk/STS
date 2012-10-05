@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="SIRJavaFactory" size="1026,704" id="uw.star.sts.extraction" metadata="uml2-1.0" initialized="true" tag="1000" key="32303037303533312D31303030205354532F776C6975">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.1/@sourceConnections.0" name="ArtifactFactory" location="134,50" size="134,67" id="uw.star.sts.extraction/ArtifactFactory" runTimeClassModel="setExperimentRoot(Ljava.lang.String;),extractTestSuite(Ljava.lang.String;),getChangeResultFile(Luw.star.sts.artifact.Program;Luw.star.sts.artifact.Program;),extract(Ljava.lang.String;),extractProgram(Ljava.lang.String;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="64,18">
+      <children xsi:type="editmodel:MethodEditModel" name="extractTestSuite" id="uw.star.sts.extraction/ArtifactFactory#extractTestSuite(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="extractProgram" id="uw.star.sts.extraction/ArtifactFactory#extractProgram(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setExperimentRoot" id="uw.star.sts.extraction/ArtifactFactory#setExperimentRoot(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getChangeResultFile" id="uw.star.sts.extraction/ArtifactFactory#getChangeResultFile(Luw.star.sts.artifact.Program;Luw.star.sts.artifact.Program;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="SIRJavaFactory" location="50,167" size="302,517" id="uw.star.sts.extraction/SIRJavaFactory" runTimeClassModel="cODE_ROOT_DIRECTORY,setExperimentRoot(Ljava.lang.String;),extractProgram(Ljava.lang.String;),extractTrace(Luw.star.sts.artifact.Application;Luw.star.sts.artifact.Program;Luw.star.sts.artifact.ProgramVariant;Luw.star.sts.artifact.TraceType;Luw.star.sts.artifact.EntityType;),parseTestCaseFile(Ljava.nio.file.Path;),experimentRoot,testSuite_UNIVERSAL_FILE_PATTERN,getChangeResultFile(Luw.star.sts.artifact.Program;Luw.star.sts.artifact.Program;),getCoverageDirByCoverageFileName(Ljava.nio.file.Path;),findVersionFilesinApplicationDirs(Ljava.nio.file.Path;Ljava.lang.String;),extract(Ljava.lang.String;),getEmmaCodeCoverageResultFile(Luw.star.sts.artifact.Program;Luw.star.sts.artifact.TestCase;Ljava.lang.String;),testSuite_ROOT_DIRECTORY,tRACE_ROOT_DIRECTORY,extractTestSuite(Ljava.lang.String;),vERSIONS_DIRECTORY_PREFIX,eXPRIMENT_ROOT_EVNIRONMENT_VARIABLE,dEFAULT_EXPERIMENT_ROOT,parseTestCaseFileVerNo(Ljava.nio.file.Path;),log,SIRJavaFactory(),aPPLICATION_DIR_PATTERN,getExperimentRoot(),testSuite_ALL_TESTCASE_FILE_PATTERN,extractTrace(Luw.star.sts.artifact.Application;Luw.star.sts.artifact.TraceType;Luw.star.sts.artifact.EntityType;),cHANGES_ROOT_DIRECTORY,findCommonFilesinApplicatonDirs(Ljava.nio.file.Path;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="279,216">
+      <children xsi:type="editmodel:AttributeEditModel" name="aPPLICATION_DIR_PATTERN" id="uw.star.sts.extraction/SIRJavaFactory#aPPLICATION_DIR_PATTERN"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="cHANGES_ROOT_DIRECTORY" id="uw.star.sts.extraction/SIRJavaFactory#cHANGES_ROOT_DIRECTORY"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="cODE_ROOT_DIRECTORY" id="uw.star.sts.extraction/SIRJavaFactory#cODE_ROOT_DIRECTORY"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="dEFAULT_EXPERIMENT_ROOT" id="uw.star.sts.extraction/SIRJavaFactory#dEFAULT_EXPERIMENT_ROOT"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="eXPRIMENT_ROOT_EVNIRONMENT_VARIABLE" id="uw.star.sts.extraction/SIRJavaFactory#eXPRIMENT_ROOT_EVNIRONMENT_VARIABLE"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="experimentRoot" id="uw.star.sts.extraction/SIRJavaFactory#experimentRoot"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="log" id="uw.star.sts.extraction/SIRJavaFactory#log"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="tRACE_ROOT_DIRECTORY" id="uw.star.sts.extraction/SIRJavaFactory#tRACE_ROOT_DIRECTORY"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="testSuite_ALL_TESTCASE_FILE_PATTERN" id="uw.star.sts.extraction/SIRJavaFactory#testSuite_ALL_TESTCASE_FILE_PATTERN"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="testSuite_ROOT_DIRECTORY" id="uw.star.sts.extraction/SIRJavaFactory#testSuite_ROOT_DIRECTORY"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="testSuite_UNIVERSAL_FILE_PATTERN" id="uw.star.sts.extraction/SIRJavaFactory#testSuite_UNIVERSAL_FILE_PATTERN"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="vERSIONS_DIRECTORY_PREFIX" id="uw.star.sts.extraction/SIRJavaFactory#vERSIONS_DIRECTORY_PREFIX"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="208,252">
+      <children xsi:type="editmodel:MethodEditModel" name="SIRJavaFactory" id="uw.star.sts.extraction/SIRJavaFactory#SIRJavaFactory()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="extract" id="uw.star.sts.extraction/SIRJavaFactory#extract(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="extractProgram" id="uw.star.sts.extraction/SIRJavaFactory#extractProgram(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="extractTestSuite" id="uw.star.sts.extraction/SIRJavaFactory#extractTestSuite(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="extractTrace" id="uw.star.sts.extraction/SIRJavaFactory#extractTrace(Luw.star.sts.artifact.Application;Luw.star.sts.artifact.Program;Luw.star.sts.artifact.ProgramVariant;Luw.star.sts.artifact.TraceType;Luw.star.sts.artifact.EntityType;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="extractTrace" id="uw.star.sts.extraction/SIRJavaFactory#extractTrace(Luw.star.sts.artifact.Application;Luw.star.sts.artifact.TraceType;Luw.star.sts.artifact.EntityType;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="findCommonFilesinApplicatonDirs" id="uw.star.sts.extraction/SIRJavaFactory#findCommonFilesinApplicatonDirs(Ljava.nio.file.Path;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="findVersionFilesinApplicationDirs" id="uw.star.sts.extraction/SIRJavaFactory#findVersionFilesinApplicationDirs(Ljava.nio.file.Path;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getCoverageDirByCoverageFileName" id="uw.star.sts.extraction/SIRJavaFactory#getCoverageDirByCoverageFileName(Ljava.nio.file.Path;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getChangeResultFile" id="uw.star.sts.extraction/SIRJavaFactory#getChangeResultFile(Luw.star.sts.artifact.Program;Luw.star.sts.artifact.Program;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getExperimentRoot" id="uw.star.sts.extraction/SIRJavaFactory#getExperimentRoot()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="parseTestCaseFile" id="uw.star.sts.extraction/SIRJavaFactory#parseTestCaseFile(Ljava.nio.file.Path;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="parseTestCaseFileVerNo" id="uw.star.sts.extraction/SIRJavaFactory#parseTestCaseFileVerNo(Ljava.nio.file.Path;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setExperimentRoot" id="uw.star.sts.extraction/SIRJavaFactory#setExperimentRoot(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getEmmaCodeCoverageResultFile" id="uw.star.sts.extraction/SIRJavaFactory#getEmmaCodeCoverageResultFile(Luw.star.sts.artifact.Program;Luw.star.sts.artifact.TestCase;Ljava.lang.String;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="uw.star.sts.extraction/ArtifactFactory&lt;-uw.star.sts.extraction/SIRJavaFactory" source="//@children.1" target="//@children.0" targetEnd="//@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.1/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="151,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="67,67"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" interactive="false" properties="open=uw.star.sts.extraction/SIRJavaFactory;wireOptions=1;Product=eUML2"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>

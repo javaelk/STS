@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.uwaterloo.ca/uw/star/sts/schema/STStechniques" xmlns:s="http://www.uwaterloo.ca/uw/star/sts/schema/STStechniques">
+    <xs:element name="STStechniques">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="s:technique"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="technique">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="s:ID"/>
+                <xs:element ref="s:Description"/>
+                <xs:element ref="s:Group"/>
+                <xs:element ref="s:Origin"/>
+                <xs:element ref="s:Origin_authors"/>
+                <xs:element ref="s:Origin_year"/>
+                <xs:element maxOccurs="unbounded" ref="s:Required_artifact"/>
+                <xs:element maxOccurs="unbounded" ref="s:Required_linkage"/>
+                <xs:element maxOccurs="unbounded" ref="s:Satisfied_goal"/>
+                <xs:element ref="s:safe"/>
+                <xs:element maxOccurs="unbounded" ref="s:Implementation"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ID" type="xs:string"/>
+    <xs:element name="Description" type="xs:string"/>
+    <xs:element name="Group" type="xs:string"/>
+    <xs:element name="Origin" type="xs:string"/>
+    <xs:element name="Origin_authors" type="xs:string"/>
+    <xs:element name="Origin_year" type="xs:integer"/>
+    <xs:element name="Required_linkage" type="xs:string"/>
+    <xs:element name="Satisfied_goal" type="xs:string"/>
+    <xs:element name="safe" type="xs:string"/>
+    <xs:element name="Implementation">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="s:ClassName"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="s:Required_artifact"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="s:Required_linkage"/>
+                <xs:element ref="s:EntityType"/>
+                <xs:element maxOccurs="unbounded" ref="s:programming_language"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="ClassName" type="xs:string"/>
+    <xs:element name="EntityType" type="xs:string"/>
+    <xs:element name="programming_language" type="xs:string"/>
+    <xs:element name="Required_artifact" type="xs:string"/>
+</xs:schema>

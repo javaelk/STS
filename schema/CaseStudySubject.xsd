@@ -10,7 +10,9 @@
     </xs:element>
     <xs:element name="cs_subject">	
 		<xs:complexType>
-			<xs:all>
+			
+			<xs:all> <!--child elements can appear in any order, and each element must occur only once-->
+<!-- TODO: add restrictions to some values!-->
 				<xs:element name="name" type="xs:string"/>
 				<xs:element name="repository" type="xs:string"/>
 				<xs:element name="test_type" type="xs:string"/>

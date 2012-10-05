@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<goal contribution_type="OR" xmlns="http://www.uwaterloo.ca/uw/star/sts/schema/STSgoals" name="Reveal more faults">
+  <goal contribution_type="OR" name="Increase code coverage">
+       <goal contribution_type="OR" name="total code coverage"/>  
+       <goal contribution_type="OR" name="coverage of modified code">
+       		<goal contribution_type="OR" name="modified classes"/>
+       		<goal contribution_type="OR" name="classes highly coupled with the modified classes"/>	 
+       </goal>  
+       <goal contribution_type="OR" name="coverage of volatile code"/>
+       <goal contribution_type="OR" name="coverage of complex code"/> 
+  </goal>
+  <goal contribution_type="OR" name="Increase requirement coverage">
+  	<goal contribution_type="OR" name="total requirement coverage"/>
+  	<goal contribution_type="OR" name="coverage of modified requirements"/>
+  	<goal contribution_type="OR" name="coverage of volatile requirements"/>
+  	<goal contribution_type="OR" name="coverage of complex requirements"/>
+  	<goal contribution_type="OR" name="coverage of critical requirements"/>
+  </goal> 
+  <goal contribution_type="OR" name="Increase design coverage">
+  	<goal contribution_type="OR" name="total design coverage"/>
+  	<goal contribution_type="OR" name="coverage of modified design"/>
+  </goal>
+</goal>
+

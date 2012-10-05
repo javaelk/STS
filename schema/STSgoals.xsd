@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" 
+targetNamespace="http://www.uwaterloo.ca/uw/star/sts/schema/STSgoals" xmlns:stsgoals="http://www.uwaterloo.ca/uw/star/sts/schema/STSgoals">
+    <xs:element name="goal">
+        <xs:complexType mixed="true">
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="stsgoals:goal"/>
+            </xs:sequence>
+            <xs:attribute name="contribution_type" use="required">
+               <xs:simpleType>
+               		<xs:restriction base="xs:string">
+               		   <xs:enumeration value="OR"/>
+               		   <xs:enumeration value="AND"/>
+               		</xs:restriction>                              
+               </xs:simpleType>         
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

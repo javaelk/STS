@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<STStechniques xmlns="http://www.uwaterloo.ca/uw/star/sts/schema/STStechniques">
+<technique>
+	<ID>T18</ID>
+	<Description>Edge level - identifies changes at the edge level</Description>
+	<Group>Graph-walk approach</Group>
+	<Origin>Regression test selection for Java software</Origin>
+	<Origin_authors>Harrold et al</Origin_authors>
+	<Origin_year>2001</Origin_year>
+	<Required_artifact>Program</Required_artifact>
+	<Required_artifact>TestCase</Required_artifact>
+	<Required_artifact>TestCase</Required_artifact>
+	<Required_linkage>test case-code</Required_linkage>
+	<Satisfied_goal>modified classes</Satisfied_goal>
+	<safe>yes</safe>
+	<Implementation>
+	 	<ClassName>TextualDifference_Source</ClassName>
+		<Required_artifact>SourceFile</Required_artifact> 	
+		 <EntityType>SOURCE</EntityType>
+	 	 <programming_language>JAVA</programming_language>
+	</Implementation>
+</technique>
+<technique>
+	<ID>T11</ID>
+	<Description>Textual Differing</Description>
+	<Group>Textual difference approach</Group>
+	<Origin>Pythia: a regression test selection tool based on textual differencing</Origin>
+	<Origin_authors>Vokolos and Frankl</Origin_authors>
+	<Origin_year>1997</Origin_year>
+	<Required_artifact>Program</Required_artifact>
+	<Required_artifact>TestCase</Required_artifact>
+	<Required_linkage>test case-code</Required_linkage>
+	<Satisfied_goal>modified classes</Satisfied_goal>
+	<safe>yes</safe>
+	<Implementation>
+	 	<ClassName>TextualDifference_Source</ClassName>
+		<Required_artifact>SourceFileEntity</Required_artifact>
+		<Required_artifact>StatementEntity</Required_artifact> 	
+		<EntityType>SOURCE</EntityType>
+	 	<programming_language>JAVA</programming_language>
+	</Implementation>
+	<Implementation>
+	 	<ClassName>TextualDifference_Statement</ClassName>
+		<Required_artifact>StatementEntity</Required_artifact> 	
+		<EntityType>StatementEntity</EntityType>
+	 	<programming_language>JAVA</programming_language>
+	</Implementation>
+</technique>
+</STStechniques>

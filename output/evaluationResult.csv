@@ -1,0 +1,13 @@
+applying technique implmented in class TextualDifference_SourceVersion 1 of test subject apache-xml-security
+predicated% - 76.80826636050516%,12/15
+actual% - 86.66666666666667%,13/15
+Version 2 of test subject apache-xml-securitypredicated% - 76.80826636050516%,12/15
+actual% - 100.0%,15/15
+Version 3 of test subject apache-xml-securitypredicated% - 76.80826636050516%,10/13
+actual% - 92.3076923076923%,12/13
+applying technique implmented in class TextualDifference_StatementVersion 1 of test subject apache-xml-securitypredicated% - 32.61072261072261%,5/15
+actual% - 86.66666666666667%,13/15
+Version 2 of test subject apache-xml-securitypredicated% - 32.61072261072261%,5/15
+actual% - 93.33333333333333%,14/15
+Version 3 of test subject apache-xml-securitypredicated% - 32.61072261072261%,4/13
+actual% - 92.3076923076923%,12/13

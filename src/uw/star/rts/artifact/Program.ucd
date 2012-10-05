@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" name="Program" size="805,488" id="uw.star.sts.artifact" metadata="uml2-1.0" initialized="true" zoom="1.5" scrolledY="212" tag="1000" key="32303037303533312D31303030205354532F776C6975">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.1/@sourceConnections.0 //@children.1/@sourceConnections.1" name="Artifact" location="50,50" size="154,139" id="uw.star.sts.artifact/Artifact" runTimeClassModel="getName(),Artifact(Ljava.lang.String;I),applicationName,versionNo,toString()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="131,36">
+      <children xsi:type="editmodel:AttributeEditModel" name="applicationName" id="uw.star.sts.artifact/Artifact#applicationName"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="versionNo" id="uw.star.sts.artifact/Artifact#versionNo"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="72,54">
+      <children xsi:type="editmodel:MethodEditModel" name="Artifact" id="uw.star.sts.artifact/Artifact#Artifact(Ljava.lang.String;I)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getName" id="uw.star.sts.artifact/Artifact#getName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" id="uw.star.sts.artifact/Artifact#toString()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="Program" location="62,239" size="130,229" id="uw.star.sts.artifact/Program" runTimeClassModel="getName(),Program(Ljava.lang.String;ILuw.star.sts.artifact.ProgramVariant;),addCodeEntities(Luw.star.sts.artifact.EntityType;Ljava.util.List;),getCodeEntities(Luw.star.sts.artifact.EntityType;),setCodeFiles(Luw.star.sts.artifact.CodeKind;Ljava.util.List;),contains(LE;),getCodeFiles(Luw.star.sts.artifact.CodeKind;),log,addCodeFiles(Luw.star.sts.artifact.CodeKind;Ljava.util.List;),toString()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="73,18">
+      <children xsi:type="editmodel:AttributeEditModel" name="log" id="uw.star.sts.artifact/Program#log"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="107,162">
+      <children xsi:type="editmodel:MethodEditModel" name="Program" id="uw.star.sts.artifact/Program#Program(Ljava.lang.String;ILuw.star.sts.artifact.ProgramVariant;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addCodeEntities" id="uw.star.sts.artifact/Program#addCodeEntities(Luw.star.sts.artifact.EntityType;Ljava.util.List;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="addCodeFiles" id="uw.star.sts.artifact/Program#addCodeFiles(Luw.star.sts.artifact.CodeKind;Ljava.util.List;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="contains" id="uw.star.sts.artifact/Program#contains(LE;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getCodeEntities" id="uw.star.sts.artifact/Program#getCodeEntities(Luw.star.sts.artifact.EntityType;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getCodeFiles" id="uw.star.sts.artifact/Program#getCodeFiles(Luw.star.sts.artifact.CodeKind;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getName" id="uw.star.sts.artifact/Program#getName()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="setCodeFiles" id="uw.star.sts.artifact/Program#setCodeFiles(Luw.star.sts.artifact.CodeKind;Ljava.util.List;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="toString" id="uw.star.sts.artifact/Program#toString()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="uw.star.sts.artifact/Artifact&lt;-uw.star.sts.artifact/Program" source="//@children.1" target="//@children.0" targetEnd="//@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.1/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="65,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="77,139"/>
+    </sourceConnections>
+    <sourceConnections xsi:type="editmodel:DependencyEditModel" autoLocated="true" id="uw.star.sts.artifact/Program-Standard::Derive->uw.star.sts.artifact/Artifact" source="//@children.1" target="//@children.0" targetEnd="//@children.1/@sourceConnections.1/@children.2" label="//@children.1/@sourceConnections.1/@children.0" sourceEnd="//@children.1/@sourceConnections.1/@children.1" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:WireLabelEditModel" name="«Derive»" size="43,14" anchorKind="MiddlePart"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="45,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="57,139"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" interactive="false" properties="open=uw.star.sts.artifact/Program;wireOptions=1;Product=eUML2"/>
+  <boardSetting snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel" gridVisibility="false">
+    <leftRuler/>
+    <topRuler/>
+  </boardSetting>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showPopupBars="true" showConnectionHandles="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPackageAttributes="true" showStaticAttributes="true" showPublicMethods="true" showPackageMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showPackageInnerClasses="true" showStaticInnerClasses="true" packageIndication="3" showAttributeProperty="true"/>
+</editmodel:ClassDiagramEditModel>

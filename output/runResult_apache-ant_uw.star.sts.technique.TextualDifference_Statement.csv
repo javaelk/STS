@@ -1,0 +1,10 @@
+,Total# of Applicable Test Cases,T11-Textual Differing-uw.star.sts.technique.TextualDifference_Statement
+apache-ant-v0,28,28
+apache-ant-v1,34,25
+apache-ant-v2,52,30
+apache-ant-v3,52,33
+apache-ant-v4,101,46
+apache-ant-v5,104,80
+apache-ant-v6,105,5
+apache-ant-v7,150,95
+apache-ant-v8,150,20

@@ -2,18 +2,39 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="C:/java/xmlbeans-2.5.0/lib/xmlpublic.jar"/>
-	<classpathentry kind="lib" path="C:/java/xmlbeans-2.5.0/lib/jsr173_1.0_api.jar"/>
-	<classpathentry kind="lib" path="C:/java/xmlbeans-2.5.0/lib/resolver.jar"/>
-	<classpathentry kind="lib" path="C:/java/xmlbeans-2.5.0/lib/xbean.jar"/>
-	<classpathentry kind="lib" path="C:/java/xmlbeans-2.5.0/lib/xbean_xpath.jar"/>
-	<classpathentry kind="lib" path="C:/java/xmlbeans-2.5.0/lib/xmlbeans-qname.jar"/>
-	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.7.0/lib/tools.jar"/>
-	<classpathentry kind="lib" path="C:/java/slf4j-1.6.2/slf4j-api-1.6.2.jar"/>
-	<classpathentry kind="lib" path="C:/java/slf4j-1.6.2/slf4j-log4j12-1.6.2.jar"/>
-	<classpathentry kind="lib" path="C:/java/apache-log4j-1.2.16/log4j-1.2.16.jar"/>
-	<classpathentry kind="lib" path="C:/java/eclipse/STS/lib/CaseStudySubject.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="lib/STStechniques.jar"/>
+	<classpathentry kind="lib" path="lib/findbugs.jar" sourcepath="/findbugs-2.0.0"/>
+	<classpathentry kind="lib" path="lib/bcel.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/jaxen-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/ant.jar"/>
+	<classpathentry kind="lib" path="lib/AppleJavaExtensions.jar"/>
+	<classpathentry kind="lib" path="lib/asm-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/asm-analysis-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/asm-commons-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/asm-tree-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/asm-util-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/asm-xml-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/CaseStudySubject.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/jcip-annotations.jar"/>
+	<classpathentry kind="lib" path="lib/jdepend-2.9.jar"/>
+	<classpathentry kind="lib" path="lib/jFormatString.jar"/>
+	<classpathentry kind="lib" path="lib/jsr305.jar"/>
+	<classpathentry kind="lib" path="lib/STSgoals.jar"/>
+	<classpathentry kind="lib" path="lib/yjp-controller-api-redist.jar"/>
+	<classpathentry kind="lib" path="lib/jtidy-r938.jar"/>
+	<classpathentry kind="lib" path="lib/jsr173_1.0_api.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="lib/resolver.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.6.2.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.6.2.jar"/>
+	<classpathentry kind="lib" path="lib/xbean_xpath.jar"/>
+	<classpathentry kind="lib" path="lib/xbean.jar"/>
+	<classpathentry kind="lib" path="lib/xmlbeans-qname.jar"/>
+	<classpathentry kind="lib" path="lib/xmlpublic.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.10.jar"/>
+	<classpathentry kind="lib" path="/RTS-T11/bin"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
