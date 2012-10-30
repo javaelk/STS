@@ -33,17 +33,48 @@
 	<Satisfied_goal>modified classes</Satisfied_goal>
 	<safe>yes</safe>
 	<Implementation>
-	 	<ClassName>TextualDifference_Source</ClassName>
+	 	<ClassName>uw.star.rts.technique.TextualDifference_Source</ClassName>
 		<Required_artifact>SourceFileEntity</Required_artifact>
 		<Required_artifact>StatementEntity</Required_artifact> 	
 		<EntityType>SOURCE</EntityType>
 	 	<programming_language>JAVA</programming_language>
 	</Implementation>
 	<Implementation>
-	 	<ClassName>TextualDifference_Statement</ClassName>
+	 	<ClassName>uw.star.rts.technique.TextualDifference_Statement</ClassName>
 		<Required_artifact>StatementEntity</Required_artifact> 	
 		<EntityType>StatementEntity</EntityType>
 	 	<programming_language>JAVA</programming_language>
+	</Implementation>
+</technique>
+<technique>
+	<ID>T25</ID>
+	<Description>Change based selection</Description>
+	<Group>Firewall approach</Group>
+	<Origin>A case study of the class firewall regression test selection technique on a large scale distributed software system </Origin>
+	<Origin_authors>Skoglund and Runeson</Origin_authors>
+	<Origin_year>2005</Origin_year>
+	<Required_artifact>Program</Required_artifact>
+	<Required_artifact>TestCase</Required_artifact>
+	<Required_linkage>test case-code</Required_linkage>
+	<Satisfied_goal>classes highly coupled with the modified classes</Satisfied_goal>
+	<safe>yes</safe>
+	<Implementation>
+	 	<ClassName>uw.star.rts.technique.ClassFirewall_Extended</ClassName>
+		<Required_artifact>ClassEntity</Required_artifact>
+		<EntityType>BINARY</EntityType>
+	 	<programming_language>JAVA</programming_language>
+	</Implementation>
+	<Implementation>
+	 	<ClassName>uw.star.rts.technique.ClassFirewall_Extended2</ClassName>
+		<Required_artifact>ClassEntity</Required_artifact>
+		<EntityType>BINARY</EntityType>
+	 	<programming_language>JAVA</programming_language>
+	 	<Implementation>
+	 	<ClassName>uw.star.rts.technique.ClassFirewall_Direct</ClassName>
+		<Required_artifact>ClassEntity</Required_artifact>
+		<EntityType>BINARY</EntityType>
+	 	<programming_language>JAVA</programming_language>
+	</Implementation>
 	</Implementation>
 </technique>
 </STStechniques>

@@ -88,25 +88,27 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 	 *  
 	 * This method should be called immediately after parsexml or parsehtml , as coveredentities are different for each test case(i.e. each xml or html file)
 	 * @param testcase t
-	 * @return list of entities execericsed by executing t on P
+	 * @return list of entities exercised by executing t on P
 	 */
-	List<Entity> extractCoveredEntities(EntityType type){
-		Set result = new HashSet<Entity>();
+	List<? extends Entity> extractCoveredEntities(EntityType type){
 		switch(type){
-		case CLAZZ : result = coveredClassEntities;
-		break;
-		case METHOD : result =coveredMethodEntities;
-		break;
-		case STATEMENT: for(SourceFileEntity sfe: srcEntities)
+		case CLAZZ : return new ArrayList<ClassEntity>(coveredClassEntities);
+	
+		case METHOD : return new ArrayList<MethodEntity>(coveredMethodEntities);
+	
+		case STATEMENT: 
+			Set<StatementEntity> result = new HashSet<>();
+			for(SourceFileEntity sfe: srcEntities)
 							result.addAll(coveredStatementsOfSourceFile.get(sfe));
-		break;
+			return new ArrayList<StatementEntity>(result);
+	
 		case SOURCE: 
-			result = rollUpToSrcEntity(coveredClassEntities);
-		break;
+			return new ArrayList<SourceFileEntity>(rollUpToSrcEntity(coveredClassEntities));
+	
 		default : 
 			log.error("unknown enum value found" + type); //this should be deadcode
 		}
-		return new ArrayList(result);
+		return null;
 
 	}
 	
@@ -116,7 +118,7 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 	 * @return
 	 */
 	String extractTestCaseName(Path xmlfile){
-		//log.debug("file name is :"+ file.getFileName().toString());
+		//log.debug("file name is :"+ xmlfile.getFileName().toString());
 		String filename = xmlfile.getFileName().toString();
 		String tcName = filename.substring(filename.indexOf(".")+1,filename.lastIndexOf("."));
 		//log.debug("test case name is: "+ tcName);
@@ -126,11 +128,12 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 	/**
 	 * extract code entities of given type and link back to the program, src entities are set in any cases.
 	 * TODO: use other ways to extract all entities. emma result xml and html files do not contain interfaces.
+	 * Ideally, the program artifact should contain ALL classes regardless it's interface or not. 
 	 * @param type
 	 * @return
 	 */
-	public List<Entity> extractEntities(EntityType type){
-		Set result = new HashSet<Entity>();
+	public List<? extends Entity> extractEntities(EntityType type){
+		List<? extends Entity> result = null;
 		List<TestCase> testcases =testSuite.getTestCaseByVersion(program.getVersionNo());
 		if(testcases.size()==0){
 			log.error("test case set should not be zero");
@@ -141,14 +144,20 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 			parseXML(af.getEmmaCodeCoverageResultFile(program,t0,"xml"));
 			switch(type){
 			case CLAZZ : 
-				result = classEntities;
-				break;
-			case METHOD : result =methodEntities;
-				break;
-			case SOURCE : result = srcEntities;
-				break;
+				result= new ArrayList<ClassEntity>(classEntities);
+			break;
+			
+			case METHOD : 
+				result= new ArrayList<MethodEntity>(methodEntities);
+			break;
+			
+			case SOURCE : 
+				result =  new ArrayList<SourceFileEntity>(srcEntities);
+			break;
+			
 			case STATEMENT: 
 				//for statement , need to all parseHTML files in addition to xml, each html file only contains statements for one source
+				Set<StatementEntity> stm = new HashSet<>();
 				coveredStatementsOfSourceFile = new HashMap<>();
 				Path htmldir =af.getEmmaCodeCoverageResultFile(program,t0,"html"); 
 		        for(Path htmlfile: FileUtility.findFiles(htmldir, "*.html")){
@@ -156,18 +165,20 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 		        	parseHTML(htmlfile); 
 		        } 
 				for(SourceFileEntity sfe : srcEntities)
-					result.addAll(sfe.getExecutableStatements());
-				break;
+					stm.addAll(sfe.getExecutableStatements());
+				result = new ArrayList<StatementEntity>(stm);
+			break;
+			
 			default : 
 				log.error("unknown enum value found" + type);
 			}
 			
 			//always link source entities to program as all other types are linked to source
 			if(!type.equals(EntityType.SOURCE)) 
-				program.setCodeEntities(EntityType.SOURCE, new ArrayList(srcEntities));
-			program.setCodeEntities(type,new ArrayList(result));
+				program.setCodeEntities(EntityType.SOURCE, new ArrayList<SourceFileEntity>(srcEntities));
+			program.setCodeEntities(type,result);
 		}
-		return new ArrayList(result);
+		return result;
 	}
      
 	
@@ -204,14 +215,16 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 				// linkages : source <--> *class <-> *method    
 				for(Node srcfileNode: XMLUtility.getChildElementsByTagName(packageNode, "srcfile")){
 					String srcfileName = ((Element)srcfileNode).getAttribute("name");
-					SourceFileEntity srcEnt = new SourceFileEntity(program,packageName,srcfileName);
+					//TODO: test this
+					Path srcfilePath = program.getCodeFilebyName(CodeKind.SOURCE, packageName, srcfileName);
+					SourceFileEntity srcEnt = new SourceFileEntity(program,packageName,srcfileName,srcfilePath);
 					srcEntities.add(srcEnt); //add a source file
 
 					List <ClassEntity> classesOfCurrentSourceFile = new ArrayList<>();  //this holds all classes of current source file to build linkage
 					//get all class nodes under this srcfile node
 					for(Node classNode: XMLUtility.getChildElementsByTagName(srcfileNode, "class")){
  						String className = ((Element)classNode).getAttribute("name");
-						ClassEntity classEnt = new ClassEntity(program,packageName,className);
+						ClassEntity classEnt = new ClassEntity(program,packageName,className,program.getCodeFilebyName(CodeKind.BINARY, packageName, className));
 						classEnt.setSource(srcEnt);  // class -> source
 						classEntities.add(classEnt); //add a class
 						classesOfCurrentSourceFile.add(classEnt);
@@ -227,7 +240,7 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 						//get all methods under this class node
 						for(Node methodNode: XMLUtility.getChildElementsByTagName(classNode, "method")){
 							String methodName = ((Element)methodNode).getAttribute("name");
-							MethodEntity methodEnt = new MethodEntity(program,packageName,className,methodName);
+							MethodEntity methodEnt = new MethodEntity(program,packageName,className,methodName,srcfilePath);
                             methodEnt.setClassEntity(classEnt);  //method ->class 
 							methodEntities.add(methodEnt); //add a method
 							methodsOfCurrentClass.add(methodEnt);
@@ -264,29 +277,36 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 	 * For each version of the program, construct a trace matrix by going through all coverage result files of all test cases.
 	 * 
 	 * A trace matrix of a particular type (class/method) is constructed by 
-	 *   1) extract all test cases of the version(same verion as p) as the row of the matrix 
+	 *   1) extract all test cases of the version(same version as p) as the row of the matrix 
 	 *   2) extract all class/method entities of the version as the column
 	 *   3) for each coverage file, extract Covered Entities
 	 *   4) insert covered entities into the Trace matrix 
 	 * @param app
 	 * @return a trace between entities of specified type and all test cases in the test suite
 	 */
-
-	public CodeCoverage createCodeCoverage(EntityType type){
+    @Override
+	public <E extends Entity> CodeCoverage<E> createCodeCoverage(EntityType type){
 		List<TestCase> testcases = testSuite.getTestCaseByVersion(program.getVersionNo());
-		List<Entity> entities = program.getCodeEntities(type);
-		CodeCoverage coverage = new CodeCoverage<Entity>(testcases,entities); 
+		
+		List<E> entities = new ArrayList<>();
+		for(Entity e:program.getCodeEntities(type)) 
+		                     entities.add((E)e);
+		
+		Path codeCoverageResultFolder = null;
+		CodeCoverage<E> coverage = new CodeCoverage<E>(testcases,entities,codeCoverageResultFolder); 
 		for(TestCase tc: testcases){ //set link for every test case
+			Path coverageResultFile =af.getEmmaCodeCoverageResultFile(program,tc,"xml");
+			if(codeCoverageResultFolder==null) codeCoverageResultFolder=coverageResultFile.getParent();
 			switch(type){
 			case SOURCE:
 				//code coverage of source file is computed from coverage of class
-				parseXML(af.getEmmaCodeCoverageResultFile(program,tc,"xml"));
+				parseXML(coverageResultFile);
 				break;
 			case CLAZZ:
-				parseXML(af.getEmmaCodeCoverageResultFile(program,tc,"xml"));
+				parseXML(coverageResultFile);
 				break;
 			case METHOD:
-				parseXML(af.getEmmaCodeCoverageResultFile(program,tc,"xml"));
+				parseXML(coverageResultFile);
 				break;
 			case STATEMENT:
 				Path htmldir =af.getEmmaCodeCoverageResultFile(program,tc,"html");
@@ -297,8 +317,12 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 		        }
 		        break;
 			}
-			coverage.setLink(tc, extractCoveredEntities(type));
+			List<E> coveredEntites = new ArrayList<>();
+			for(Entity e:extractCoveredEntities(type) )
+				coveredEntites.add((E)e);
+			coverage.setLink(tc,coveredEntites);
 		}
+		coverage.setArtifactFile(codeCoverageResultFolder);
 		return coverage;
 	}
 	
@@ -312,7 +336,7 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 		List<SourceFileEntity> allSrc = new ArrayList<>();
 		for(Entity e: program.getCodeEntities(EntityType.SOURCE))
 			allSrc.add((SourceFileEntity)e);
-		CodeCoverage<SourceFileEntity> srcCoverage = new CodeCoverage(testSuite.getTestCases(),allSrc);
+		CodeCoverage<SourceFileEntity> srcCoverage = new CodeCoverage(testSuite.getTestCases(),allSrc,clazzCoverage.getArtifactFile());
 		
 		//create a new matrix based on given clazzCoverageMatrix
 		int[][] clazzCoverageMatrix = clazzCoverage.getLinkMatrix();
@@ -340,7 +364,7 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 		return srcCoverage;
 	}
 	/**
-	 * roll up a set of covered class entity to a set of covered source file entity
+	 * Helper method to roll up a set of covered class entity to a set of covered source file entity
 	 */
 	Set<SourceFileEntity> rollUpToSrcEntity(Set<ClassEntity> clazzSet){
 		Set<SourceFileEntity> srcSet = new HashSet<>();

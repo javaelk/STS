@@ -14,7 +14,7 @@ public class StopWatchTest {
 		StopWatch sw = new StopWatch();
 		sw.start(CostFactor.ApplyTechniqueCost);
 		sw.stop(CostFactor.ApplyTechniqueCost);
-		assertEquals("elapsedtime","0", sw.getElapsedTime(CostFactor.ApplyTechniqueCost));
+		assertTrue("elapsedtime",sw.getElapsedTime(CostFactor.ApplyTechniqueCost)<2);
 		assertEquals("elapsedtime","0", sw.getElapsedTimeSecs(CostFactor.ApplyTechniqueCost));
 	}
 

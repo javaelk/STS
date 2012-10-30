@@ -11,6 +11,7 @@ import uw.star.rts.extraction.SIRJavaFactory;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class SIRJavaFactoryTest {
@@ -19,21 +20,21 @@ public class SIRJavaFactoryTest {
 	 * @uml.property  name="testapp"
 	 * @uml.associationEnd  
 	 */
-	Application testapp;
+	static Application testapp;
 	/**
 	 * @uml.property  name="sir"
 	 * @uml.associationEnd  
 	 */
-	SIRJavaFactory sir;
+	static SIRJavaFactory sir;
 	/**
 	 * @uml.property  name="appname"
 	 */
-	String appname = "apache-xml-security";
+	static String appname = "apache-xml-security";
     
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() throws Exception {
 	  sir = new SIRJavaFactory();
-	  sir.setExperimentRoot("C:\\Documents and Settings\\wliu\\My Documents\\personal\\Dropbox");
+	  sir.setExperimentRoot("/home/wliu/sir");
 	  testapp = sir.extract(appname);
 	}
 
@@ -93,8 +94,8 @@ public class SIRJavaFactoryTest {
 	
 	@Test
 	public void testGetEmmaCodeCoverageResultFile(){
-		Path xmlfile = Paths.get("C:\\Documents and Settings\\wliu\\My Documents\\personal\\Dropbox\\apache-xml-security\\traces.alt\\CodeCoverage\\orig\\v0\\coverage.org.apache.xml.security.test.c14n.helper.C14nHelperTest.xml");
-		Path htmldir = Paths.get("C:\\Documents and Settings\\wliu\\My Documents\\personal\\Dropbox\\apache-xml-security\\traces.alt\\CodeCoverage\\orig\\v0\\coverage.org.apache.xml.security.test.c14n.helper.C14nHelperTest\\_files"); 
+		Path xmlfile = Paths.get("/home/wliu/sir/apache-xml-security/traces.alt/CODECOVERAGE/orig/v0/coverage.org.apache.xml.security.test.c14n.helper.C14nHelperTest.xml");
+		Path htmldir = Paths.get("/home/wliu/sir/apache-xml-security/traces.alt/CODECOVERAGE/orig/v0/coverage.org.apache.xml.security.test.c14n.helper.C14nHelperTest/_files"); 
 		Program p0 = testapp.getProgram(ProgramVariant.orig, 0);
 		TestCase t0 = testapp.getTestSuite().getTestCaseByName("org.apache.xml.security.test.c14n.helper.C14nHelperTest");
 		assertEquals("test xml", xmlfile,sir.getEmmaCodeCoverageResultFile(p0, t0, "xml"));

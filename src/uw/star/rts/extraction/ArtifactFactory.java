@@ -11,7 +11,7 @@ public abstract class ArtifactFactory {
 	/**
 	 * each factory class implements artifacts extraction of an application from a given repository
 	 * This is a abstraction layer to disk IO/file structures as each repository will likely have different 
-	 * folder strutures ,file names etc to store various artifacts.
+	 * folder structures ,file names etc to store various artifacts.
 	 * @return
 	 */
 	public abstract Application extract(String applicationName);

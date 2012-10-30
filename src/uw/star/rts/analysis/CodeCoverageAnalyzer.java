@@ -21,8 +21,8 @@ public abstract class CodeCoverageAnalyzer {
 	 *  
 	 * @return
 	 */
-	public abstract List<Entity> extractEntities(EntityType type);
-	public abstract CodeCoverage createCodeCoverage(EntityType type);
+	public abstract List<? extends Entity> extractEntities(EntityType type);
+	public abstract <E extends Entity> CodeCoverage<E> createCodeCoverage(EntityType type);
 	
 /*	TODO:
  * public abstract long getEstimatedCost();

@@ -1,18 +1,20 @@
 package uw.star.rts.artifact;
 
 import java.util.*;
-
+import java.nio.file.*;
 
 /**
- * Coverage represents covearage relation between test cases and an entity type E over exection of a Program p.
- * Coverage is a specical type of Trace that row type is always test case and column type is always a subtype of Entity  
+ * Coverage represents coverage relation between test cases and an entity type E over execution of a Program p.
+ * Coverage is a special type of Trace that row type is always test case and column type is always a subtype of Entity  
  * @author wliu
  *
  */
-public class CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
+public class  CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
 
-	public CodeCoverage (List<TestCase> testcases,List<E> entities){
-		super(TraceType.CODECOVERAGE,testcases, entities);	
+	
+	public  CodeCoverage(List<TestCase> testcases,List<E> entities,Path coverageFilesFolder){
+		super(TraceType.CODECOVERAGE,testcases, entities,coverageFilesFolder);	
+		//as CodeCoverage represent coverage of a list of test cases, there are multiple files, so the path is the folder contains all coverage files
 	}
 
 	
@@ -57,6 +59,6 @@ public class CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
 				}
 			}
 		}
-		return new ArrayList(results);
+		return new ArrayList<E>(results);
 	}
 }

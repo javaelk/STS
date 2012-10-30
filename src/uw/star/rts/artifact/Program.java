@@ -13,6 +13,8 @@ package uw.star.rts.artifact;
 
 import java.util.*;
 import org.slf4j.*;
+
+import java.io.File;
 import java.nio.file.*;
 
 public class Program extends Artifact{
@@ -34,12 +36,13 @@ public class Program extends Artifact{
 	 * @uml.property  name="codeEntities"
 	 * @uml.associationEnd  qualifier="type:uw.star.sts.artifact.EntityType java.util.List"
 	 */
-	Map<EntityType,List<Entity>> codeEntities;
+	Map<EntityType,List<? extends Entity>> codeEntities;
 	
+	Path codeFilesRoot;
 	
 	static Logger log;
-	public Program(String appName,int v,ProgramVariant variantType){
-		super(appName,v);
+	public Program(String appName,int v,ProgramVariant variantType,Path programRootFolder){
+		super(appName,v,programRootFolder);
 		setVariantType(variantType);
 		codeMap = new HashMap<CodeKind,List<Path>>();
 		log = LoggerFactory.getLogger(Program.class);
@@ -77,6 +80,78 @@ public class Program extends Artifact{
 		return;
 	}
 	
+	public void setCodeFilesRoot(Path root){
+		codeFilesRoot = root;
+	}
+	
+	public Path getCodeFilesRoot(){
+		return codeFilesRoot;
+	}
+	
+	public Path getCodeFilebyName(CodeKind codeKind,String packageName, String name){
+		Path resultPath = null;
+		//unique constraints
+		//by package name and class name
+		switch(codeKind){
+		case BINARY :
+			resultPath = findFilebyName(getCodeFiles(codeKind),packageName,name,".class");
+			break;
+		case SOURCE:
+			resultPath = findFilebyName(getCodeFiles(codeKind),packageName,name,"");
+			break;
+		case HTML:
+			resultPath = findFilebyName(getCodeFiles(codeKind),name);
+			break;
+		case PROPERTY:
+			resultPath = findFilebyName(getCodeFiles(codeKind),name);
+			break;
+		default: 
+			log.error("Unknown codeKind " + codeKind);
+			
+		}
+		return resultPath;
+	}
+	/**
+	 * Helper method to find the actual path to a given class/source file
+	 * this method basically reconstruct the file path based on the package name and class name
+	 * this method returns the 1st occurrence of the given name   
+	 * TODO: performance is really bad as this iterates every code files in the program.
+	 * @param codeFiles - a given list of class files 
+	 * @param packageName - class file's package name
+	 * @param className - class name
+	 * @return 
+	 */
+	private Path findFilebyName(List<Path> codeFiles,String packageName,String className,String extenstion){
+		if(packageName!=null){
+			if(packageName.contains(".")){
+			    className = packageName.replace('.', File.separatorChar)+File.separator+className + extenstion;
+			}else{
+				className = packageName+File.separator+className + extenstion;
+			}
+		}
+				
+	    for(Path code: codeFiles)
+	        if(code.endsWith(className))
+	        	return code;
+	    log.error("Package " + packageName + " class " + className + extenstion + " not found in given code list ");
+	    return null;
+	}
+	
+	/**
+	 * Helper method to find a file find the given list
+	 * this method returns the 1st occurrence of the given name   
+	 * @param fullname - file's full name with extension
+	 * @param className - class name
+	 * @return 
+	 */
+	private Path findFilebyName(List<Path> codeFiles,String fullName){
+	    for(Path code: codeFiles)
+	        if(code.endsWith(fullName))
+	        	return code;
+	    log.error(fullName + " not found in given code list ");
+	    return null;
+	}
+	
 	public void addCodeFiles(CodeKind codeKind,List<Path> codeFiles){
 		if(codeMap.get(codeKind)==null){//was empty
 			setCodeFiles(codeKind,codeFiles);
@@ -93,7 +168,7 @@ public class Program extends Artifact{
 	 * @param entities
 	 * @return
 	 */
-	public boolean setCodeEntities(EntityType type,List<Entity> entities){
+	public boolean setCodeEntities(EntityType type,List<? extends Entity> entities){
 		if(codeEntities.containsKey(type)){
 			log.error("Entity type " + type + " already exist, replace by new values");
 		}
@@ -119,7 +194,7 @@ public class Program extends Artifact{
 		return true;
 	}
 	
-	public List<Entity> getCodeEntities(EntityType type){
+	public List<? extends Entity> getCodeEntities(EntityType type){
 		return codeEntities.get(type);
 	}
 	

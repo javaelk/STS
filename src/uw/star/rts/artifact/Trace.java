@@ -64,10 +64,10 @@ public class Trace<T extends Artifact, U extends Artifact> extends Artifact {
 	 * @param b
 	 *            - columns
 	 */
-	public Trace(TraceType type, List<T> a, List<U> b) {
+	public Trace(TraceType type, List<T> a, List<U> b, Path traceFile) {
 		// assume all artifacts are in the same version and all belong to one
 		// application!
-		super(a.get(0).getApplicationName(), a.get(0).getVersionNo());
+		super(a.get(0).getApplicationName(), a.get(0).getVersionNo(),traceFile);
 		log = LoggerFactory.getLogger(Trace.class.getName());
 		if (a.size() == 0 || b.size() == 0)
 			log.error("row/column artifact sets is empty");
@@ -95,7 +95,7 @@ public class Trace<T extends Artifact, U extends Artifact> extends Artifact {
 	 */
 	public boolean setLink(T a, List<U> linkedArtifacts) {
 		// find a from row, a and row should be of same type and have equals
-		// method implmented
+		// method implemented
 		int i = row.indexOf(a);
 		// find all b from column
 		if (i < 0) { // a not found
@@ -350,7 +350,7 @@ public class Trace<T extends Artifact, U extends Artifact> extends Artifact {
 
 	Trace convertRowMapToTrace(List<U> col, Map<T, int[]> rowMap) {
 		List<T> r = new ArrayList<T>(rowMap.keySet());
-		Trace<T, U> nt = new Trace<T, U>(this.traceType, r, col);
+		Trace<T, U> nt = new Trace<T, U>(this.traceType, r, col,this.getArtifactFile());
 		for (int i = 0; i < r.size(); i++)
 			for (int j = 0; j < col.size(); j++)
 				if (rowMap.get(r.get(i))[j] == 1)
@@ -360,7 +360,7 @@ public class Trace<T extends Artifact, U extends Artifact> extends Artifact {
 
 	Trace convertColumnMapToTrace(List<T> roo, Map<U, int[]> colMap) {
 		List<U> col = new ArrayList<U>(colMap.keySet());
-		Trace<T, U> nt = new Trace<T, U>(this.traceType, roo, col);
+		Trace<T, U> nt = new Trace<T, U>(this.traceType, roo, col,this.getArtifactFile());
 		for (int j = 0; j < col.size(); j++)
 			for (int i = 0; i < roo.size(); i++)
 				if (colMap.get(col.get(j))[i] == 1)

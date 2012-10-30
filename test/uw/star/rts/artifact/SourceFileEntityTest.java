@@ -14,7 +14,7 @@ import org.junit.rules.ExpectedException;
 
 public class SourceFileEntityTest {
 
-	String EXPERIMENTROOT = "C:\\Documents and Settings\\wliu\\My Documents\\personal\\Dropbox";
+	String EXPERIMENTROOT = "/home/wliu/sir";
 	String appname = "apache-xml-security";
 	Program p;
 	SourceFileEntity sfe;
@@ -26,7 +26,7 @@ public class SourceFileEntityTest {
 	sir.setExperimentRoot(EXPERIMENTROOT);
 	Application testapp = sir.extract(appname);
 	p = testapp.getProgram(ProgramVariant.orig, 0);
-	sfe = new SourceFileEntity(p,"default.package","test.java");
+	sfe = new SourceFileEntity(p,"default.package","test.java",null);
 	s1 = new StatementEntity(sfe,10,"int i=0");
 	s2 = new StatementEntity(sfe,20,"int j=0");
 	s3 = new StatementEntity(sfe,120,"int k=0");

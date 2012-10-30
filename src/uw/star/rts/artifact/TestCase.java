@@ -1,6 +1,6 @@
 package uw.star.rts.artifact;
 import java.util.*;
-
+import java.nio.file.*;
 /**
  * represents one test case in the test suite
  * @author Weining Liu
@@ -36,8 +36,8 @@ public class TestCase extends Artifact{
 	private static int globalTestID;
 	
 	
-	public TestCase(String appName,int v,String tcName){
-		super(appName,v);
+	public TestCase(String appName,int v,String tcName,Path testcaseFile){
+		super(appName,v,testcaseFile);
 		testCaseName = tcName;
 		testID = globalTestID++;
 		applicableVersions = new BitSet();

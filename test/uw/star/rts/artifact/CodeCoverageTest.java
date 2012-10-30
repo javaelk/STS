@@ -20,7 +20,7 @@ import org.junit.Test;
 public class CodeCoverageTest extends TraceTest{
 
 	
-	String EXPERIMENTROOT = "C:\\Documents and Settings\\wliu\\My Documents\\personal\\Dropbox";
+	String EXPERIMENTROOT = "/home/wliu/sir";
 	String appname = "apache-xml-security";
 	Program p;
 	SourceFileEntity sfe;
@@ -35,7 +35,7 @@ public class CodeCoverageTest extends TraceTest{
 		sir.setExperimentRoot(EXPERIMENTROOT);
 		Application testapp = sir.extract(appname);
 		p = testapp.getProgram(ProgramVariant.orig, 0);
-		sfe = new SourceFileEntity(p,"default.package","test.java");
+		sfe = new SourceFileEntity(p,"default.package","test.java",null);
 		s1 = new StatementEntity(sfe,10,"int i=0");
 		s2 = new StatementEntity(sfe,20,"int j=0");
 		s3 = new StatementEntity(sfe,120,"int k=0");
@@ -44,7 +44,7 @@ public class CodeCoverageTest extends TraceTest{
 		tca.add(a);tca.add(b);tca.add(c);tca.add(d);tca.add(e);tca.add(f);
 		List<StatementEntity> sea = new ArrayList<>();
 		sea.add(s1);sea.add(s2);sea.add(s3);
-		t2 =new CodeCoverage<StatementEntity>(tca,sea);
+		t2 =new CodeCoverage<StatementEntity>(tca,sea,null);
 		t2.setLink(a, s1);
 		t2.setLink(a, s3);
 		t2.setLink(c, s1);

@@ -1,7 +1,7 @@
 package uw.star.rts.artifact;
 import java.util.*;
 import org.slf4j.*;
-
+import java.nio.file.*;
 /**
  * a SourceFileEntity represents a uncompiled source file 
  * TODO: source file should be beautified first @see http://stackoverflow.com/questions/996646/stand-alone-java-code-formatter-beautifier-pretty-printer
@@ -22,10 +22,10 @@ public class SourceFileEntity extends Entity {
 	int[] stmIndex; //a  map table: index:line number, value: index in executableStm.This is for O(1) access of getStatementByLineNumber()
 	Logger log;
 	
-	public SourceFileEntity(Program p, String packageName, String sourceFileName){
-		super(p.getApplicationName(),p.getVersionNo());
+	public SourceFileEntity(Program p, String packageName, String srcfileName, Path sourceFile){
+		super(p.getApplicationName(),p.getVersionNo(),sourceFile);
 		this.packageName =packageName;
-		this.sourceFileName = sourceFileName;
+		this.sourceFileName = srcfileName;
 		this.p =p;
 		//Bug fix:Feb26,2012: remove coverage information from source file. Coverage information should be in trace.
 		// A source file should contain an array of executable statements but not the coverage informaiton of them as they are dependant on test cases.

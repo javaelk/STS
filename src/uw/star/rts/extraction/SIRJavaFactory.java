@@ -18,7 +18,6 @@ import java.io.*;
 public class SIRJavaFactory extends ArtifactFactory{
 	//SIR JAVA specific constants
 	static String EXPRIMENT_ROOT_EVNIRONMENT_VARIABLE="experiment_root";
-	static String DEFAULT_EXPERIMENT_ROOT="C:\\Documents and Settings\\wliu\\My Documents\\personal\\Dropbox";
 	static String VERSIONS_DIRECTORY_PREFIX="v";
 	
 	//code 
@@ -42,6 +41,7 @@ public class SIRJavaFactory extends ArtifactFactory{
 	static Logger log;
 	
 	public SIRJavaFactory(){
+		super();
 		log= LoggerFactory.getLogger(SIRJavaFactory.class.getName());
 	}
 	
@@ -49,7 +49,7 @@ public class SIRJavaFactory extends ArtifactFactory{
 	 * this should extract all artifacts except changes(change analysis) and traces (coverage analysis)
 	 */
 	public Application extract(String applicationName){
-		Application newApp = new Application(applicationName,extractProgram(applicationName),extractTestSuite(applicationName),this);
+		Application newApp = new Application(applicationName,extractProgram(applicationName),extractTestSuite(applicationName),this,Paths.get(experimentRoot,applicationName));
 		return newApp;
 	}
 	
@@ -89,7 +89,7 @@ public class SIRJavaFactory extends ArtifactFactory{
         			log.debug("looking into dir {}",verDir);
         			String versionNo = verDir.getFileName().toString().substring(VERSIONS_DIRECTORY_PREFIX.length());
         			//one version of code contains all source,class, html etc of that version
-        			Program ver = new Program(applicationName,Integer.parseInt(versionNo),variant);
+        			Program ver = new Program(applicationName,Integer.parseInt(versionNo),variant,verDir);
 
         			/* do not search for src instead just search by file extension, some SIR subject do not have src directory 
         			for(int i=0;i<CODEKIND.length;i++){//extract each kind of code : source , class etc.
@@ -114,6 +114,7 @@ public class SIRJavaFactory extends ArtifactFactory{
         			Path buildDir = FileUtility.findDirs(verDir, "build").get(0);
         			// for each version of the program
         			// 1. find all codekind under component/variant directory
+        			ver.setCodeFilesRoot(buildDir);  //this is the root folder for all code kinds
         			
         			for(CodeKind ck : CodeKind.values()){//extract each kind of code : source , class etc. and set them to the program object
         				log.debug("search code kind " + ck + " in directory " + buildDir + " looking for pattern " + ck.getFilePattern());
@@ -230,7 +231,7 @@ public class SIRJavaFactory extends ArtifactFactory{
 		        		for(String n: parseTestCaseFile(file)){
                             TestCase tc = null; 
 		        			if(!tcm.containsKey(n)){
-			        			tc = new TestCase(applicationName,dirVer,n);
+			        			tc = new TestCase(applicationName,dirVer,n,file);
 			        			log.debug("creating new test case: " + applicationName + dirVer + n);
 		        			}else{
 		        				tc = tcm.get(n);
@@ -247,7 +248,7 @@ public class SIRJavaFactory extends ArtifactFactory{
 		        		for(String n: parseTestCaseFile(file)){
 		        			TestCase tc = null;
 		        			if(!tcm.containsKey(n)){
-			        			tc = new TestCase(applicationName,dirVer,n);
+			        			tc = new TestCase(applicationName,dirVer,n,file);
 			        			log.debug("creating new test case: " + applicationName + dirVer + n);
 		        			}else{
 		        				tc = tcm.get(n);
@@ -267,7 +268,7 @@ public class SIRJavaFactory extends ArtifactFactory{
         			for(String n: parseTestCaseFile(file)){
 	        			TestCase tc = null;
 	        			if(!tcm.containsKey(n)){
-		        			tc = new TestCase(applicationName,dirVer,n);
+		        			tc = new TestCase(applicationName,dirVer,n,file);
 	        			}else{
 	        				tc = tcm.get(n);
 	        			}
@@ -277,7 +278,7 @@ public class SIRJavaFactory extends ArtifactFactory{
         	
 	        }
 	        //create a new test suite
-	        TestSuite ts = new TestSuite(applicationName,applicationName+"_testSuite",new ArrayList<TestCase>(tcm.values()));
+	        TestSuite ts = new TestSuite(applicationName,applicationName+"_testSuite",new ArrayList<TestCase>(tcm.values()),testPlanPath);
 	        return ts;
 	 }
 

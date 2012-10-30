@@ -30,7 +30,7 @@ public class Engine {
 	public static String CASESTUDYSUBJECTFILE = "CaseStudySubjectFile";
 	public static String STSTECHNIQUESFILE = "STStechniquesFile";
 	public static String EVALUATION="Evaluation";
-	public static String EXPERIMENTROOT="experiment_root";
+	
 	static Logger log =LoggerFactory.getLogger(Engine.class.getName());
 	static Path GoalRepository;
 	static Path UserGoalSelection;
@@ -123,7 +123,7 @@ public class Engine {
 		STStechniques = Paths.get(properties.getProperty(STSTECHNIQUESFILE));
 		String eval = properties.getProperty(EVALUATION);
 		evaluationMode =(eval!=null&&eval.equalsIgnoreCase("true"))?true:false;
-		experiment_root = properties.getProperty(EXPERIMENTROOT);
+		experiment_root = properties.getProperty(Constant.EXPERIMENTROOT);
 	}
 
 	/**

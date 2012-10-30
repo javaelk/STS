@@ -39,7 +39,7 @@ public class TechniqueFactoryTest {
 		assertTrue(techNames.contains("uw.star.rts.technique.TextualDifference_Statement"));
 	}
 
-	@Test
+
 	public void testFilterOnDataAvailability() {
 		fail("Not yet implemented");
 	}

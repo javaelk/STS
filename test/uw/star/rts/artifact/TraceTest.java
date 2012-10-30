@@ -20,32 +20,32 @@ public class TraceTest {
 	 * @uml.property  name="a"
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
-	TestCase a = new TestCase("tt",0,"a");
+	TestCase a = new TestCase("tt",0,"a",null);
 	/**
 	 * @uml.property  name="b"
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
-	TestCase b = new TestCase("tt",0,"b");
+	TestCase b = new TestCase("tt",0,"b",null);
 	/**
 	 * @uml.property  name="c"
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
-	TestCase c = new TestCase("tt",0,"c");
+	TestCase c = new TestCase("tt",0,"c",null);
 	/**
 	 * @uml.property  name="d"
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
-	TestCase d = new TestCase("tt",0,"d");
+	TestCase d = new TestCase("tt",0,"d",null);
 	/**
 	 * @uml.property  name="e"
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
-	TestCase e = new TestCase("tt",0,"e");
+	TestCase e = new TestCase("tt",0,"e",null);
 	/**
 	 * @uml.property  name="f"
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
-	TestCase f = new TestCase("tt",0,"f");
+	TestCase f = new TestCase("tt",0,"f",null);
 	/**
 	 * @uml.property  name="aa"
 	 * @uml.associationEnd  multiplicity="(0 -1)"
@@ -64,7 +64,7 @@ public class TraceTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		 t1= new Trace(TraceType.CODECOVERAGE,Arrays.asList(aa),Arrays.asList(ab));
+		 t1= new Trace(TraceType.CODECOVERAGE,Arrays.asList(aa),Arrays.asList(ab),null);
 	}
 
 	@After

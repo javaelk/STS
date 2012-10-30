@@ -20,7 +20,7 @@ public class TestCaseTest {
 
 	@Test
 	public void testSetApplicableVersions() {
-		TestCase tc = new TestCase("xml-security",0,"TESTETS");
+		TestCase tc = new TestCase("xml-security",0,"TESTETS",null);
 		tc.addApplicableVersions(0);
 		assertTrue(tc.isApplicabletoVersion(0));
 		tc.addApplicableVersions(1);

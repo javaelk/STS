@@ -1,6 +1,6 @@
 package uw.star.rts.artifact;
 
-
+import java.nio.file.*;
 public abstract class Artifact {
 	
 
@@ -12,10 +12,12 @@ public abstract class Artifact {
 	 * @uml.property  name="applicationName"
 	 */
 	String applicationName;
+	Path artifactPath;
 	
-	Artifact(String appName,int v){
+	Artifact(String appName,int v,Path path){
 		applicationName = appName;
 		versionNo = v;
+		artifactPath = path;
 	}
 	
 	/**
@@ -34,6 +36,17 @@ public abstract class Artifact {
 		return versionNo;
 	}
 	
+	/**
+	 * get the file/directory that contains the artifact
+	 * @return
+	 */
+	public Path getArtifactFile(){
+		return artifactPath;
+	}
+	
+	public void setArtifactFile(Path afile){
+		artifactPath = afile;
+	}
 	public abstract String getName();
 	
 	public String toString(){

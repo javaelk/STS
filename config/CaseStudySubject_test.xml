@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <casestudy_subject xmlns="http://www.uwaterloo.ca/uw/star/sts/schema/CaseStudySubject">
 	<cs_subject>
-		<name>jtopas</name>
+		<name>apache-ant</name>
 		<repository>SIR_JAVA</repository>
 		<test_type>unit</test_type>
 		<fault_type>seeded</fault_type>
 		<language>java</language>
-		<sequential_versions>4</sequential_versions>
-		<size_loc>5400</size_loc>
-		<size_class>50</size_class>
+		<sequential_versions>9</sequential_versions>
+		<size_loc>80500</size_loc>
+		<size_class>627</size_class>
 	</cs_subject>
 </casestudy_subject>

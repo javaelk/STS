@@ -1,6 +1,7 @@
 package uw.star.rts.artifact;
 
 import java.util.*;
+import java.nio.file.*;
 import org.slf4j.*;
 
 import uw.star.rts.extraction.*;
@@ -43,7 +44,7 @@ public class Application {
 	//or code coverage analysis (getEmmaCodecoverageResultFile)
 	
 	ArtifactFactory af;
-	
+	Path applicationRootPath; //root folder of application on disk
 	/**
 	 * @uml.property  name="log"
 	 * @uml.associationEnd  multiplicity="(1 1)"
@@ -56,7 +57,7 @@ public class Application {
 	 * @param programs
 	 * @param testsuite
 	 */
-	public Application(String appName, Map<ProgramVariant,List<Program>> programs,TestSuite testsuite,ArtifactFactory af){
+	public Application(String appName, Map<ProgramVariant,List<Program>> programs,TestSuite testsuite,ArtifactFactory af,Path applicationRootPath){
 	    log = LoggerFactory.getLogger(Application.class.getName());
 		//An application in minimum should consist of a non-empty program and non-empty test suite
 		if(programs.size()==0||testsuite.isEmpty()){
@@ -72,12 +73,15 @@ public class Application {
 		for(Program p : this.programs.get(ProgramVariant.orig))
 			maxVer =(p.versionNo>maxVer)?p.versionNo:maxVer;
 		this.numVersions = maxVer +1;	
+		this.applicationRootPath = applicationRootPath;
 	}
 	
 	public String getApplicationName(){
 		return appName;
 	}
-	
+	public Path getApplicationRootPath(){
+		return this.applicationRootPath;
+	}
 	public TestSuite getTestSuite(){
 		return testsuite;
 	}

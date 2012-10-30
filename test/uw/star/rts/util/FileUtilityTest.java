@@ -14,9 +14,9 @@ import uw.star.rts.util.FileUtility;
 
 public class FileUtilityTest {
 
-	static String TESTFOLDER1="c:\\cygwin\\home\\apache-xml-security\\versions.alt";
-	static String TESTFOLDER2="c:\\cygwin\\home\\apache-xml-security\\versions.alt\\seeded";
-	static String TESTFOLDER3="c:\\cygwin\\home\\apache-xml-security\\versions.alt\\seeded\\v1\\xml-security\\src";
+	static String TESTFOLDER1="/home/wliu/sir/apache-xml-security/versions.alt";
+	static String TESTFOLDER2="/home/wliu/sir/apache-xml-security/versions.alt/seeded";
+	static String TESTFOLDER3="/home/wliu/sir/apache-xml-security/versions.alt/seeded/v1/xml-security/src";
 	@Before
 	public void setUp() throws Exception {
 	}

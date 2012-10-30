@@ -1,6 +1,6 @@
 package uw.star.rts.artifact;
 import java.util.*;
-
+import java.nio.file.*;
 /**
  * this class represents compiled java class 
  * @author wliu
@@ -21,8 +21,8 @@ public class ClassEntity extends Entity{
 	List<MethodEntity> methods;
 	
 	//class entity represent a class file(complied from source file)
-	public ClassEntity(Program p, String packageName, String className){
-		super(p.getApplicationName(),p.getVersionNo());
+	public ClassEntity(Program p, String packageName, String className,Path classFile){//class name may not be the same as classfile name
+		super(p.getApplicationName(),p.getVersionNo(),classFile);
 		this.packageName =packageName;
 		this.className = className;
 		this.p =p;

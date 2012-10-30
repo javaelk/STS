@@ -74,11 +74,12 @@ public class TechniqueFactory {
 		return techniqueImplmentations;
 	}
 	
-	 //TODO: this should return a list of technique objects, use Java reflection 
+
 	 /**
 	  * Create an instance of the technique based on the provided fully qualified class name
 	  * @param className - fully qualified class name of technique implementation.
 	  * @return a technique instance
+	  * This method uses Java reflection API
 	  * @see http://docs.oracle.com/javase/tutorial/reflect/member/ctorInstance.html
 	  */
 	private uw.star.rts.technique.Technique getTechniqueInstancebyName(String className){

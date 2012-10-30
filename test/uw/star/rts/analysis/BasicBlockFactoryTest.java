@@ -47,7 +47,7 @@ public class BasicBlockFactoryTest extends TestCase {
 		super.setUp();
 		// Add additional set up code here
 		  SIRJavaFactory sir = new SIRJavaFactory();
-		  sir.setExperimentRoot("C:\\Documents and Settings\\wliu\\My Documents\\personal\\Dropbox");
+		  sir.setExperimentRoot("/home/wliu/sir");
 		  testapp = sir.extract(appname);
 	}
 

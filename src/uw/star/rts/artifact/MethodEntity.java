@@ -1,6 +1,6 @@
 package uw.star.rts.artifact;
 
-
+import java.nio.file.*;
 public class MethodEntity extends Entity {
     
 	/**
@@ -22,8 +22,8 @@ public class MethodEntity extends Entity {
 
 	Program program;
 	
-    public MethodEntity(Program p, String packageName,String className,String methodSignature){
-    	super(p.getApplicationName(),p.getVersionNo());
+    public MethodEntity(Program p, String packageName,String className,String methodSignature,Path sourceEntityFile){
+    	super(p.getApplicationName(),p.getVersionNo(),sourceEntityFile);
 		this.className = className;
 		this.packageName = packageName;
 		this.methodSignature = methodSignature;

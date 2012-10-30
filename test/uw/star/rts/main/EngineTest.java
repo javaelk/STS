@@ -23,7 +23,7 @@ public class EngineTest {
 
 	@Test
 	public void testGetInputFiles() {
-		Engine.getInputFiles("config/configuration.property");
+		Engine.getInputFiles("config/ARTSConfiguration.property");
 		assertTrue("GoalRepository file exist",Files.exists(Engine.GoalRepository));
 		assertTrue("UserGoalSelection file exist",Files.exists(Engine.UserGoalSelection));
 		assertTrue("CaseStudySubject file exist",Files.exists(Engine.CaseStudySubject));
@@ -32,18 +32,18 @@ public class EngineTest {
 
 	@Test
 	public void testModelingGoals() {
-		Engine.getInputFiles("config/configuration.property");
+		Engine.getInputFiles("config/ARTSConfiguration.property");
 		assertEquals("test selected goals",1,Engine.modelingGoals(Engine.GoalRepository, Engine.UserGoalSelection).size());
 	}
 
 	@Test
 	public void testExtractInfoFromRepository() {
-		assertEquals("test extract from repository",1,Engine.extractInfoFromRepository(Paths.get("config/CaseStudySubject.xml")).size());
+		assertEquals("test extract from repository",4,Engine.extractInfoFromRepository(Paths.get("config/CaseStudySubject.xml")).size());
 	}
 
 	@Test
 	public void testEvaluation(){
-		Engine.getInputFiles("config/configuration.property");
+		Engine.getInputFiles("config/ARTSConfiguration.property");
 		Engine.evaluate();
 	}
 }

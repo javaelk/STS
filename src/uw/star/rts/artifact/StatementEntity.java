@@ -1,5 +1,5 @@
 package uw.star.rts.artifact;
-
+import java.nio.file.*;
 /**
  * A statement is an executable line in a source file
  * @author wliu
@@ -14,8 +14,8 @@ public class StatementEntity extends Entity {
     //one statement belongs to source file only
 	SourceFileEntity srcFile;
 	
-    public StatementEntity(Program p, String packageName,String srcName,int lineNum, String statement){
-    	super(p.getApplicationName(),p.getVersionNo());
+    public StatementEntity(Program p, String packageName,String srcName,int lineNum, String statement,Path sourceFile){
+    	super(p.getApplicationName(),p.getVersionNo(),sourceFile);
 		//lineNum should always greater than 0, starting from 1
     	if(lineNum<1)
     		throw new IllegalArgumentException("lineNum should start from 1");
@@ -30,7 +30,7 @@ public class StatementEntity extends Entity {
     
     
     public StatementEntity(SourceFileEntity sf, int lineNum,String statement){
-    	this(sf.p,sf.packageName,sf.sourceFileName,lineNum,statement);
+    	this(sf.p,sf.packageName,sf.sourceFileName,lineNum,statement,sf.getArtifactFile());
     	srcFile = sf;  //statement --> source
     }
     

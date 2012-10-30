@@ -22,6 +22,7 @@ public class TestCaseSelectionTest {
 	@Before
 	public void setUp() throws Exception {
 		ArtifactFactory af =new SIRJavaFactory(); 
+		af.setExperimentRoot("/home/wliu/sir");
 		app = af.extract("apache-xml-security");
 		v1=app.getProgram(ProgramVariant.orig, 1);
 		v2=app.getProgram(ProgramVariant.orig, 2);

@@ -1,6 +1,7 @@
 package uw.star.rts.artifact;
 
 import java.util.*;
+import java.nio.file.*;
 /**
  * Test suite is a container for a set of test cases. There is only one test suite object per application, test suite object holds all test cases of all versions
  * Use Test Case.getApplicableVersions to figure out which versions the test case is applicable to  
@@ -17,8 +18,8 @@ public class TestSuite extends Artifact{
 	 */
 	List<TestCase> testcases;
 	  
-	  public TestSuite(String appName,String tpName,List<TestCase> testcases){
-		  super(appName,0); //always v0 as there is only one version of test suite per application
+	  public TestSuite(String appName,String tpName,List<TestCase> testcases,Path testSuiteRootFolder){
+		  super(appName,0,testSuiteRootFolder); //always v0 as there is only one version of test suite per application
 		  testSuiteName = tpName;
 		  this.testcases = testcases;
 	  }
