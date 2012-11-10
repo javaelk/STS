@@ -115,8 +115,10 @@ public class TestCaseSelection {
 			}
 			actualPrecision.put(tec, actualPrecisionArray);
 			actualCost.put(tec, costArrayPerTec);
+			log.info("Completed RTS technqiue " + tec.getImplmentationName());
 		}
-		ResultOutput.outputEvalResult("actual",actualPrecision,null,testSubjectVersions,actualCost);
+		Path resultFile = ResultOutput.outputEvalResult("actual",actualPrecision,null,testSubjectVersions,actualCost);
+		log.info("All techniques are applied successfully, results have been written to "+ resultFile.getFileName());
 	}
     
 	/**

@@ -60,14 +60,14 @@ public class BasicBlockFactory {
 
 			//CFG
 		      for(java.nio.file.Path classFile: program.getCodeFiles(CodeKind.BINARY)){
-		    	  try{
+		    	  try(InputStream stream = Files.newInputStream(classFile)){
 		    		 // log.debug("filepath " + classFile.toFile().getParentFile().getCanonicalPath());
 	//TODO: filepath?	  filepath = classFile.toFile().getParentFile().getCanonicalPath();
 		  		ICodeBaseLocator locator = classFactory.createFilesystemCodeBaseLocator(filepath);
 					builder.addCodeBase(locator, true);
 					builder.build(classPath, new NoOpFindBugsProgress()); 
 		    	
-					JavaClass theClass = new ClassParser(Files.newInputStream(classFile),classFile.getFileName().toString()).parse();
+					JavaClass theClass = new ClassParser(stream,classFile.getFileName().toString()).parse();
 		    	  ClassContext classContext = analysisContext.getClassContext(theClass);
 		    	  log.debug("Start analyzing Class : " + theClass.getClassName());
 		    	  	for(Method theMethod: Arrays.asList(theClass.getMethods())){

@@ -1,6 +1,6 @@
 STSgoalsFile=config/STSgoals.xml
 UserGoalSelection=config/UserGoalSelection.xml
-CaseStudySubjectFile=config/CaseStudySubject_test.xml
+CaseStudySubjectFile=config/CaseStudySubject.xml
 STStechniquesFile=config/STStechniques.xml
 Evaluation=true
 experiment_root=/home/wliu/sir

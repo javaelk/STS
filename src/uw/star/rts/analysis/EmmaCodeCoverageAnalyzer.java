@@ -127,7 +127,7 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 
 	/**
 	 * extract code entities of given type and link back to the program, src entities are set in any cases.
-	 * TODO: use other ways to extract all entities. emma result xml and html files do not contain interfaces.
+	 * TODO: use other ways to extract all entities. emma result xml and html files do not contain interfaces. Consider JaCoCo.
 	 * Ideally, the program artifact should contain ALL classes regardless it's interface or not. 
 	 * @param type
 	 * @return

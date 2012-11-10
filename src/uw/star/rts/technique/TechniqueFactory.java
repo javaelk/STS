@@ -68,6 +68,7 @@ public class TechniqueFactory {
 				uw.star.rts.technique.Technique tech = getTechniqueInstancebyName(className); 
 				tech.setID(techSpec.getID());
 				tech.setDescription(techSpec.getDescription());
+				tech.setImplmentationName(className);
 				techniqueImplmentations.add(tech);
 				}
 		}

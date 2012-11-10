@@ -16,7 +16,7 @@ import uw.star.rts.cost.CostFactor;
 import uw.star.rts.technique.Technique;
 
 public class ResultOutput {
-	public static void outputEvalResult(String firstCellHeader,Map<Technique,List<Double>> precision,Map<Technique,List<Long>> predicatedAnalysisCost, List<String> testSubjectVersions,Map<Technique,List<StopWatch>> actualCost){
+	public static Path outputEvalResult(String firstCellHeader,Map<Technique,List<Double>> precision,Map<Technique,List<Long>> predicatedAnalysisCost, List<String> testSubjectVersions,Map<Technique,List<StopWatch>> actualCost){
 		Path outputFile = Paths.get("output"+File.separator+"evaluationResult_"+firstCellHeader+"_"+DateUtils.now("MMMdd_HHmm")+".csv");
 		Charset charset = Charset.forName("UTF-8");
 
@@ -57,5 +57,7 @@ public class ResultOutput {
 		}catch(IOException ec){
 			ec.printStackTrace();
 		}
+		return outputFile;
 	}
+
 }

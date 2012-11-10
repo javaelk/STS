@@ -69,12 +69,12 @@
 		<Required_artifact>ClassEntity</Required_artifact>
 		<EntityType>BINARY</EntityType>
 	 	<programming_language>JAVA</programming_language>
-	 	<Implementation>
+	</Implementation>
+	<Implementation>
 	 	<ClassName>uw.star.rts.technique.ClassFirewall_Direct</ClassName>
 		<Required_artifact>ClassEntity</Required_artifact>
 		<EntityType>BINARY</EntityType>
 	 	<programming_language>JAVA</programming_language>
-	</Implementation>
 	</Implementation>
 </technique>
 </STStechniques>
