@@ -2,8 +2,14 @@ package uw.star.rts.extraction;
 
 import static org.junit.Assert.*;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 import uw.star.rts.artifact.*;
@@ -73,22 +79,49 @@ public class SIRJavaFactoryTest {
 
 	@Test
 	public void testExtractTestSuites() {
-	
-		//assertEquals("verify nanoxml has 6 versions of test suites",6, nanoxmlTest.size());
-		//assertEquals("verfiy v0 has x test cases", 10,nanoxmlTest.get(0).getTestCases().size());
-		
-	
-		//fail("Not yet implemented");
+
+		Path file = Paths.get("output"+File.separator+"testSuiteAnalysis_"+testapp.getApplicationName()+".csv");
+		Charset charset = Charset.forName("UTF-8");
+		TestSuite ts = testapp.getTestSuite();
+		try(BufferedWriter writer = Files.newBufferedWriter(file,charset,StandardOpenOption.WRITE,StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING)){
+			//write column headers
+			writer.write("version,test case applicable to current ver,#of test case applicable to current ver,test cases also applicable to next ver, #test case also applicable to next ver\n");
+			for(int i=0;i<testapp.getTotalNumVersons();i++){
+				writer.write("v"+i+",");
+				List<TestCase> tc = ts.getTestCaseByVersion(i); 
+				for(TestCase test:tc)
+					writer.write(test.getTestCaseName()+" ");
+				writer.write(",");
+				writer.write(tc.size()+",");
+				if(i<testapp.getTotalNumVersons()-1){
+					int counter=0;
+					for(TestCase test:tc){//for every test case in current version
+						if(test.isApplicabletoVersion(i+1)){ //verify if it's also applicable to next version
+							writer.write(test.getTestCaseName()+" ");
+							counter++;
+						} 
+					}
+					writer.write(",");
+					writer.write(counter+"");
+					writer.write("\n");
+				}
+			}
+		}catch(IOException ec){
+			ec.printStackTrace();
+		}
 	}
 
 	@Test
 	public void testParseTestCaseFileVerNo() {
-		//fail("Not yet implemented");
 	}
 
 	@Test
 	public void testParseTestCaseFile() {
-		//fail("Not yet implemented");
+		Path univserFile = Paths.get("test"+File.separator+"testfiles"+File.separator+"v0.class.junit.universe");
+		List<String> testcaseNames = sir.parseTestCaseFile(univserFile);
+		assertTrue("there should be total of 13 test cases", testcaseNames.size()==13);
+		assertTrue("should contain test case org.apache.xml.security.test.interop.IAIKTest",testcaseNames.contains("org.apache.xml.security.test.interop.IAIKTest"));
+		assertTrue("should contain test case org.apache.xml.security.test.c14n.implementations.Canonicalizer20010315Test",testcaseNames.contains("org.apache.xml.security.test.c14n.implementations.Canonicalizer20010315Test"));
 	}
 	
 	
@@ -100,6 +133,6 @@ public class SIRJavaFactoryTest {
 		TestCase t0 = testapp.getTestSuite().getTestCaseByName("org.apache.xml.security.test.c14n.helper.C14nHelperTest");
 		assertEquals("test xml", xmlfile,sir.getEmmaCodeCoverageResultFile(p0, t0, "xml"));
 		assertEquals("test html", htmldir,sir.getEmmaCodeCoverageResultFile(p0, t0, "html"));
-		assertEquals("test null",null,sir.getEmmaCodeCoverageResultFile(p0, t0, "something"));
+		assertNull("test null",sir.getEmmaCodeCoverageResultFile(p0, t0, "something"));
 	}
 }

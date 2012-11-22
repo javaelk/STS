@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <casestudy_subject xmlns="http://www.uwaterloo.ca/uw/star/sts/schema/CaseStudySubject">
-	<cs_subject>
+<cs_subject>
 		<name>jtopas</name>
 		<repository>SIR_JAVA</repository>
 		<test_type>unit</test_type>

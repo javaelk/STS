@@ -526,6 +526,9 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 		 Tidy tidy = new Tidy();
 		 tidy.setMakeClean(true);
 		 tidy.setXmlOut( true); //output is XML.
+		 tidy.setOnlyErrors(true);
+		 tidy.setShowWarnings(false);
+		 tidy.setErrout(new PrintWriter(new NullOutputStream()));
     
 		 //create a XML output of the htmlfile in the same directory, same name but remove html extension add xml extension
 		 String htmlname =htmlPath.getFileName().toString(); 
@@ -541,7 +544,12 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 		 
 		 return htmldoc;
 	 }
-
+	 
+	 public class NullOutputStream extends OutputStream {
+		  @Override
+		  public void write(int b) throws IOException {
+		  }
+		}
 	 /**
 	  * Parse pacakge name and java source file name from htmldoc and return the SourceFileEntity object 
 	  * @param htmldoc

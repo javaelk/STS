@@ -204,12 +204,20 @@ public class SIRJavaFactory extends ArtifactFactory{
 	 
 	 /*
 	  * Extract all test cases for all versions, and make them into one test suite
+	  * From README file under testplan.alt
+	  * Universe file organization
+	  * 1. vk-1.class.junit.universe/vk.class.junit.universe:
+	  * 	- JUnit test cases.
+	  *     - vk-1.class.junit.universe: common test cases between vk-1 and vk.
+	  *     	- vk.class.junit.universe: common test cases between vk and vk+1.
+	  * 2. vk.class.junit.universe.all
+	  * 	- include all test cases for vk.
 	  * TODO: this one extracts Junit test suites only, need a different method for TSL type of tests, get type information from xml configuration file
 	  */
 	 TestSuite extractTestSuite(String applicationName){
 			
 		  log.info("Extracting test cases ...");
-		 	Map<String,TestCase> tcm = new Hashtable<String,TestCase>(); //test case name as key, each test case name is unique within an application
+		 	Map<String,TestCase> testcaseMap = new Hashtable<String,TestCase>(); //test case name as key, each test case name is unique within an application
 			//find path to testplans.alt
 			Path testPlanPath =Paths.get(experimentRoot,applicationName,TestSuite_ROOT_DIRECTORY); //testplans.alt
 			
@@ -217,7 +225,12 @@ public class SIRJavaFactory extends ArtifactFactory{
 				log.error("testPlan directory " + testPlanPath.toAbsolutePath().toString() + " does not exist");
 				System.exit(-1);
 			}
+			//first parse all universe.all files to add all test cases for vk
 			
+			//then go through all universe files to add applicable version, note any inconsistencies 
+			
+			// verify junit test cases exist in class file
+			// verify test cases are in the execution scripts
 	        for(Path verDir : FileUtility.listDirectory(testPlanPath, VERSIONS_DIRECTORY_PREFIX+"*",new VersionDirectoryComparator(VERSIONS_DIRECTORY_PREFIX))){
 	        			//v0
 	        	int dirVer = Integer.parseInt(verDir.getFileName().toString().substring(VERSIONS_DIRECTORY_PREFIX.length()));
@@ -230,16 +243,16 @@ public class SIRJavaFactory extends ArtifactFactory{
 		        	    //these are new test cases for this version
 		        		for(String n: parseTestCaseFile(file)){
                             TestCase tc = null; 
-		        			if(!tcm.containsKey(n)){
+		        			if(!testcaseMap.containsKey(n)){
 			        			tc = new TestCase(applicationName,dirVer,n,file);
 			        			log.debug("creating new test case: " + applicationName + dirVer + n);
 		        			}else{
-		        				tc = tcm.get(n);
+		        				tc = testcaseMap.get(n);//existing
 		        			}
 		        			tc.addApplicableVersions(dirVer);
 	        				tc.addApplicableVersions(dirVer+1);
 	        				tc.existInPreviousVersion(false);
-	        				tcm.put(n, tc);
+	        				testcaseMap.put(n, tc);//replace if existing
 		        		}
 	        		}else if(fileVer == dirVer-1){
 	        		// vk-1.class.junit.universe: common test cases between vk-1 and vk.
@@ -247,15 +260,16 @@ public class SIRJavaFactory extends ArtifactFactory{
 	        		//these are existing test cases for this version
 		        		for(String n: parseTestCaseFile(file)){
 		        			TestCase tc = null;
-		        			if(!tcm.containsKey(n)){
+		        			if(!testcaseMap.containsKey(n)){
 			        			tc = new TestCase(applicationName,dirVer,n,file);
 			        			log.debug("creating new test case: " + applicationName + dirVer + n);
 		        			}else{
-		        				tc = tcm.get(n);
+		        				tc = testcaseMap.get(n);
 		        			}
 	        				tc.addApplicableVersions(dirVer);
 	        				tc.addApplicableVersions(dirVer-1);
 	        				tc.existInPreviousVersion(true);
+	        				testcaseMap.put(n, tc);
 		        		}
 	        			
 	        		}else{
@@ -267,18 +281,19 @@ public class SIRJavaFactory extends ArtifactFactory{
         		for(Path file:FileUtility.findFiles(verDir, TestSuite_ALL_TESTCASE_FILE_PATTERN)){
         			for(String n: parseTestCaseFile(file)){
 	        			TestCase tc = null;
-	        			if(!tcm.containsKey(n)){
+	        			if(!testcaseMap.containsKey(n)){
 		        			tc = new TestCase(applicationName,dirVer,n,file);
 	        			}else{
-	        				tc = tcm.get(n);
+	        				tc = testcaseMap.get(n);
 	        			}
         				tc.addApplicableVersions(dirVer);
+        				testcaseMap.put(n, tc);
  	        		}
         		}
         	
 	        }
 	        //create a new test suite
-	        TestSuite ts = new TestSuite(applicationName,applicationName+"_testSuite",new ArrayList<TestCase>(tcm.values()),testPlanPath);
+	        TestSuite ts = new TestSuite(applicationName,applicationName+"_testSuite",new ArrayList<TestCase>(testcaseMap.values()),testPlanPath);
 	        return ts;
 	 }
 
