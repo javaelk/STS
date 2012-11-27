@@ -1,0 +1,24 @@
+predicated,T25-Change based selection-null_precision,PredicatedAnalysisCost(ms),T25-PrecisionPredictionCost(ms),T25-AnalysisCostPredictionCost(ms)
+jtopas-v0,0.31746031746031744,0,789,0
+jtopas-v1,0.31746031746031744,0,-1,-1
+jtopas-v2,0.31746031746031744,0,-1,-1
+jtopas-v3,0.31746031746031744,0,-1,-1
+apache-ant-v0,0.6365546218487395,0,3452,0
+apache-ant-v1,0.6365546218487395,0,-1,-1
+apache-ant-v2,0.6365546218487395,0,-1,-1
+apache-ant-v3,0.6365546218487395,0,-1,-1
+apache-ant-v4,0.6365546218487395,0,-1,-1
+apache-ant-v5,0.6365546218487395,0,-1,-1
+apache-ant-v6,0.6365546218487395,0,-1,-1
+apache-ant-v7,0.6365546218487395,0,-1,-1
+apache-ant-v8,0.6365546218487395,0,-1,-1
+jakarta-jmeter-v0,0.12566137566137567,0,4978,0
+jakarta-jmeter-v1,0.12566137566137567,0,-1,-1
+jakarta-jmeter-v2,0.12566137566137567,0,-1,-1
+jakarta-jmeter-v3,0.12566137566137567,0,-1,-1
+jakarta-jmeter-v4,0.12566137566137567,0,-1,-1
+jakarta-jmeter-v5,0.12566137566137567,0,-1,-1
+apache-xml-security-v0,0.6786484543493889,0,1366,0
+apache-xml-security-v1,0.6786484543493889,0,-1,-1
+apache-xml-security-v2,0.6786484543493889,0,-1,-1
+apache-xml-security-v3,0.6786484543493889,0,-1,-1

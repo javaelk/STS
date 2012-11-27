@@ -15,6 +15,7 @@ import java.util.*;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class CodeCoverageTest extends TraceTest{
@@ -26,7 +27,8 @@ public class CodeCoverageTest extends TraceTest{
 	SourceFileEntity sfe;
 	StatementEntity s1,s2,s3;
 
-	CodeCoverage t2;
+	protected CodeCoverage codeCoverage;
+	protected List<TestCase> tca;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -40,17 +42,17 @@ public class CodeCoverageTest extends TraceTest{
 		s2 = new StatementEntity(sfe,20,"int j=0");
 		s3 = new StatementEntity(sfe,120,"int k=0");
 		
-		List<TestCase> tca = new ArrayList<>();
+		tca = new ArrayList<>();
 		tca.add(a);tca.add(b);tca.add(c);tca.add(d);tca.add(e);tca.add(f);
 		List<StatementEntity> sea = new ArrayList<>();
 		sea.add(s1);sea.add(s2);sea.add(s3);
-		t2 =new CodeCoverage<StatementEntity>(tca,sea,null);
-		t2.setLink(a, s1);
-		t2.setLink(a, s3);
-		t2.setLink(c, s1);
-		t2.setLink(c, s3);
-		t2.setLink(e, s3);
-		t2.setLink(f,s1);
+		codeCoverage =new CodeCoverage<StatementEntity>(tca,sea,null);
+		codeCoverage.setLink(a, s1);
+		codeCoverage.setLink(a, s3);
+		codeCoverage.setLink(c, s1);
+		codeCoverage.setLink(c, s3);
+		codeCoverage.setLink(e, s3);
+		codeCoverage.setLink(f,s1);
 	}
 
 	@After
@@ -59,11 +61,11 @@ public class CodeCoverageTest extends TraceTest{
 
 	@Test
 	public void testGetCumulativeCoverage() {
-		assertEquals("cumlative coverage ",6,t2.getCumulativeCoverage() );
+		assertEquals("cumlative coverage ",6,codeCoverage.getCumulativeCoverage() );
 	}
 	@Test
 	public void testGetCoveredEntites(){
-		List<Entity> covered = t2.getCoveredEntities();
+		List<Entity> covered = codeCoverage.getCoveredEntities();
 		assertEquals("# of  entites are covered",2,covered.size());
 		assertTrue("s1 is covered",covered.contains(s1));
 		assertFalse("s2 is not covered",covered.contains(s2));

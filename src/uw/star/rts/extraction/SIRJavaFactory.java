@@ -37,6 +37,11 @@ public class SIRJavaFactory extends ArtifactFactory{
 	//changes
 	static String CHANGES_ROOT_DIRECTORY="changes";
 	
+	//test scripts
+	static String TestScript_ROOT_DIRECTORY="scripts"+File.separator+"TestScripts";
+	static String TestScript_FILE_PATTERN="scriptR*coverage.cls";
+	static String TestScript_TESTCASE_PREFIX="junit.textui.TestRunner ";
+	
 	static String experimentRoot;
 	static Logger log;
 	
@@ -111,7 +116,17 @@ public class SIRJavaFactory extends ArtifactFactory{
         			 * the src and classes dir under build are created duing build process and the build dir is copied back to version.alt manually
         			 * there doesn't seem to be any consistence between different SIR test subjects! 
         			 */
-        			Path buildDir = FileUtility.findDirs(verDir, "build").get(0);
+        			List<Path> buildDirs =FileUtility.findDirs(verDir, "build");
+        			Path buildDir = null;
+        			if(buildDirs.size()>1){ 
+        				
+        				//make a best guess here, the build dir closest to verDir should be the one. 
+        				buildDir = FileUtility.findShortestDistance(verDir,buildDirs);
+        				log.error("more than one build directory found!! I'm confused " + verDir  +"best guess of build directory is " + buildDir);
+        				
+        			}else{
+        			    buildDir = buildDirs.get(0);
+        			}
         			// for each version of the program
         			// 1. find all codekind under component/variant directory
         			ver.setCodeFilesRoot(buildDir);  //this is the root folder for all code kinds
@@ -216,68 +231,20 @@ public class SIRJavaFactory extends ArtifactFactory{
 	  */
 	 TestSuite extractTestSuite(String applicationName){
 			
-		  log.info("Extracting test cases ...");
+		    log.info("Extracting test cases ...");
 		 	Map<String,TestCase> testcaseMap = new Hashtable<String,TestCase>(); //test case name as key, each test case name is unique within an application
 			//find path to testplans.alt
 			Path testPlanPath =Paths.get(experimentRoot,applicationName,TestSuite_ROOT_DIRECTORY); //testplans.alt
-			
 			if(!Files.exists(testPlanPath)||!Files.isDirectory(testPlanPath)){
 				log.error("testPlan directory " + testPlanPath.toAbsolutePath().toString() + " does not exist");
 				System.exit(-1);
 			}
+			int totalNumOfVersions =0; 
 			//first parse all universe.all files to add all test cases for vk
-			
-			//then go through all universe files to add applicable version, note any inconsistencies 
-			
-			// verify junit test cases exist in class file
-			// verify test cases are in the execution scripts
 	        for(Path verDir : FileUtility.listDirectory(testPlanPath, VERSIONS_DIRECTORY_PREFIX+"*",new VersionDirectoryComparator(VERSIONS_DIRECTORY_PREFIX))){
-	        			//v0
+	             //v0 
 	        	int dirVer = Integer.parseInt(verDir.getFileName().toString().substring(VERSIONS_DIRECTORY_PREFIX.length()));
-	        			//find universe file
-	        	for(Path file: FileUtility.findFiles(verDir, TestSuite_UNIVERSAL_FILE_PATTERN)){
-	        		int fileVer = parseTestCaseFileVerNo(file);
-	        		if(dirVer==fileVer){
-		        		//vk.class.junit.universe: common test cases between vk and vk+1. 
-		        	    //applicable versions k, and k+1,exist in previous no
-		        	    //these are new test cases for this version
-		        		for(String n: parseTestCaseFile(file)){
-                            TestCase tc = null; 
-		        			if(!testcaseMap.containsKey(n)){
-			        			tc = new TestCase(applicationName,dirVer,n,file);
-			        			log.debug("creating new test case: " + applicationName + dirVer + n);
-		        			}else{
-		        				tc = testcaseMap.get(n);//existing
-		        			}
-		        			tc.addApplicableVersions(dirVer);
-	        				tc.addApplicableVersions(dirVer+1);
-	        				tc.existInPreviousVersion(false);
-	        				testcaseMap.put(n, tc);//replace if existing
-		        		}
-	        		}else if(fileVer == dirVer-1){
-	        		// vk-1.class.junit.universe: common test cases between vk-1 and vk.
-	        	    // applicable versions k, and k-1,exist in previous yes
-	        		//these are existing test cases for this version
-		        		for(String n: parseTestCaseFile(file)){
-		        			TestCase tc = null;
-		        			if(!testcaseMap.containsKey(n)){
-			        			tc = new TestCase(applicationName,dirVer,n,file);
-			        			log.debug("creating new test case: " + applicationName + dirVer + n);
-		        			}else{
-		        				tc = testcaseMap.get(n);
-		        			}
-	        				tc.addApplicableVersions(dirVer);
-	        				tc.addApplicableVersions(dirVer-1);
-	        				tc.existInPreviousVersion(true);
-	        				testcaseMap.put(n, tc);
-		        		}
-	        			
-	        		}else{
-	        			System.out.println("something is wrong, file verion number "+fileVer + " does not match with directory version number" + dirVer);
-	        		}
-	        		
-	        	}
-	        			//find universe.all, vk.class.junit.universe.all- include all test cases for vk.
+       			//find universe.all, vk.class.junit.universe.all- include all test cases for vk.
         		for(Path file:FileUtility.findFiles(verDir, TestSuite_ALL_TESTCASE_FILE_PATTERN)){
         			for(String n: parseTestCaseFile(file)){
 	        			TestCase tc = null;
@@ -285,17 +252,34 @@ public class SIRJavaFactory extends ArtifactFactory{
 		        			tc = new TestCase(applicationName,dirVer,n,file);
 	        			}else{
 	        				tc = testcaseMap.get(n);
+	        				tc.addApplicableVersions(dirVer);
 	        			}
-        				tc.addApplicableVersions(dirVer);
         				testcaseMap.put(n, tc);
  	        		}
         		}
-        	
+        		totalNumOfVersions++;
 	        }
+			//then go through all universe files to verify applicable version, log any inconsistencies as error 
+	        for(Path verDir : FileUtility.listDirectory(testPlanPath, VERSIONS_DIRECTORY_PREFIX+"*",new VersionDirectoryComparator(VERSIONS_DIRECTORY_PREFIX))){
+	        	new SIRJavaArtifactVerification(this).parseUniverseFiles(verDir,testcaseMap,totalNumOfVersions);
+	        }
+			//TODO: verify junit test cases exist in class file
+			//TODO: verify test cases are in the execution scripts       
+	        
 	        //create a new test suite
 	        TestSuite ts = new TestSuite(applicationName,applicationName+"_testSuite",new ArrayList<TestCase>(testcaseMap.values()),testPlanPath);
 	        return ts;
 	 }
+
+      public List<Path> extractTestExecutionScripts(String applicationName){
+    	  log.info("Extracting test scripts ...");
+    	  Path testScriptRoot =Paths.get(experimentRoot,applicationName,TestScript_ROOT_DIRECTORY); //TestScript
+			if(!Files.exists(testScriptRoot)||!Files.isDirectory(testScriptRoot)){
+				log.error("test script directory " + testScriptRoot.toAbsolutePath().toString() + " does not exist");
+				System.exit(-1);
+			}
+			return FileUtility.findFiles(testScriptRoot, TestScript_FILE_PATTERN);
+      }
 
         /**
          * Helper method to take version number from the test case file  
@@ -321,6 +305,25 @@ public class SIRJavaFactory extends ArtifactFactory{
 			    while ((line = reader.readLine()) != null) {
 			    	if(line.startsWith("-P["))
 					   testCaseNames.add(line.substring(line.indexOf("[")+1,line.indexOf("]")));
+			    }
+			}catch (IOException x) {
+				System.err.format("IOException in reading " + file.getFileName().toString()+ x);
+			}
+			return testCaseNames; 
+		}
+		
+		
+		/**
+		 * Helper method to parse a test script file and parse each line to find test cases
+		 */
+		List<String> parseTestScriptFile(Path file){
+			List<String> testCaseNames = new ArrayList<String>();
+			Charset charset = Charset.forName("US-ASCII");
+			try(BufferedReader reader=Files.newBufferedReader(file, charset)){
+				 String line = null;
+			    while ((line = reader.readLine()) != null) {
+			    	if(line.contains(TestScript_TESTCASE_PREFIX))
+					   testCaseNames.add(line.substring(line.indexOf(TestScript_TESTCASE_PREFIX)+TestScript_TESTCASE_PREFIX.length(),line.indexOf(">")).trim());
 			    }
 			}catch (IOException x) {
 				System.err.format("IOException in reading " + file.getFileName().toString()+ x);

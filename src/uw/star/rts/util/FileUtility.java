@@ -29,6 +29,8 @@ public class FileUtility {
 			}
 			return result;
 	  }
+	  
+	  
 	  /**
 	   * Overload method to return a sorted list of directories under current directory
 	   * @param dirPath
@@ -162,5 +164,28 @@ public class FileUtility {
 	  public static List<Path> findDirs(Path startingDir,String pattern,Comparator<Path> cp){
 		  return sort(findDirs(startingDir,pattern),cp);
 	  }
-	  
+	  /**
+	   * Find a path closest to base
+	   * @param base
+	   * @param others
+	   * @return
+	   */
+	  public static Path findShortestDistance(Path base, List<Path> others){
+		  if(others.size()==0) return null;
+		  if(others.size()==1) return others.get(0);
+		  int distance[] = new int[others.size()]; //track relative distance of each path in others
+		  for(int i=0;i<others.size();i++)
+			  distance[i]= others.get(i).relativize(base).getNameCount();
+		  //find the smallest value's index
+		  int idx =0;
+		  int min=distance[0];
+		  for(int j=1;j<distance.length;j++){
+			  if(distance[j]<min){
+				  min=distance[j];
+				  idx =j;
+			  }
+		  }
+		  return others.get(idx);
+	  }
+  
 }

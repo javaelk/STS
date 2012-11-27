@@ -52,7 +52,7 @@ public class TestSuite extends Artifact{
 				  results.add(t);
 		  return results;
 	  }
-	  
+
 	  public int size(){
 		  return testcases.size();
 	  }

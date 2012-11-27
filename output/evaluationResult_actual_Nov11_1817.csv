@@ -1,0 +1,24 @@
+actual,T25-Change based selection-uw.star.rts.technique.ClassFirewall_Extended_precision,T25-CoverageAnalysisCost(ms),T25-ChangeAnalysisCost(ms),T25-ApplyTechniqueCost(ms),T25-TestExecutionCost(ms),T25-Change based selection-uw.star.rts.technique.ClassFirewall_Direct_precision,T25-CoverageAnalysisCost(ms),T25-ChangeAnalysisCost(ms),T25-ApplyTechniqueCost(ms),T25-TestExecutionCost(ms),T25-Change based selection-uw.star.rts.technique.ClassFirewall_Extended2_precision,T25-CoverageAnalysisCost(ms),T25-ChangeAnalysisCost(ms),T25-ApplyTechniqueCost(ms),T25-TestExecutionCost(ms)
+jtopas-v0,1.0,-1,-1,-1,-1,1.0,-1,-1,-1,-1,1.0,-1,-1,-1,-1
+jtopas-v1,0.0,101,19674,0,-1,0.0,73,3576,0,-1,0.0,69,26285,0,-1
+jtopas-v2,0.0,36,1327,0,-1,0.0,17,3672,0,-1,0.0,11,25855,0,-1
+jtopas-v3,0.0,43,2766,0,-1,0.0,20,3900,0,-1,0.0,21,30351,0,-1
+apache-ant-v0,1.0,-1,-1,-1,-1,1.0,-1,-1,-1,-1,1.0,-1,-1,-1,-1
+apache-ant-v1,0.0,1839,295901,0,-1,0.0,2952,11372,0,-1,0.0,2884,460277,0,-1
+apache-ant-v2,0.0,417,219500,1,-1,0.0,514,13958,0,-1,0.0,554,710179,0,-1
+apache-ant-v3,0.0,522,21794,0,-1,0.0,655,13329,0,-1,0.0,634,128219,0,-1
+apache-ant-v4,0.0,765,845184,0,-1,0.0,1013,13223,0,-1,0.0,1011,1712784,0,-1
+apache-ant-v5,0.0,1375,475813,0,-1,0.0,1526,17556,0,-1,0.0,1493,1255015,0,-1
+apache-ant-v6,0.0,1448,30449,0,-1,0.0,1454,17218,0,-1,0.0,1553,97087,0,-1
+apache-ant-v7,0.0,1691,1673706,0,-1,0.0,1799,19582,0,-1,0.0,1949,3792454,0,-1
+apache-ant-v8,0.0,2248,196328,0,-1,0.0,2219,19826,0,-1,0.0,2292,452956,0,-1
+jakarta-jmeter-v0,1.0,-1,-1,-1,-1,1.0,-1,-1,-1,-1,1.0,-1,-1,-1,-1
+jakarta-jmeter-v1,0.0,4873,965382,0,-1,0.0,4801,14376,0,-1,0.0,4932,1002175,0,-1
+jakarta-jmeter-v2,0.0,516,149959,0,-1,0.0,434,14725,0,-1,0.0,470,549855,0,-1
+jakarta-jmeter-v3,0.0,571,563573,0,-1,0.0,557,12535,0,-1,0.0,552,1486445,0,-1
+jakarta-jmeter-v4,0.0,575,292620,0,-1,0.0,568,15269,0,-1,0.0,652,749085,0,-1
+jakarta-jmeter-v5,0.0,656,724522,0,-1,0.0,656,13788,0,-1,0.0,587,1471561,0,-1
+apache-xml-security-v0,1.0,-1,-1,-1,-1,1.0,-1,-1,-1,-1,1.0,-1,-1,-1,-1
+apache-xml-security-v1,0.0,1596,471905,0,-1,0.0,1596,9995,0,-1,0.0,1601,478940,0,-1
+apache-xml-security-v2,0.0,244,21629,0,-1,0.0,210,9503,0,-1,0.0,218,209430,0,-1
+apache-xml-security-v3,0.0,204,138028,0,-1,0.0,191,9686,0,-1,0.0,218,552108,0,-1

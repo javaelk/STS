@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/STStechniques.jar"/>
+	<classpathentry kind="lib" path="lib/findbugs.jar" sourcepath="/findbugs-2.0.0"/>
+	<classpathentry kind="lib" path="lib/bcel.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/jaxen-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/ant.jar"/>
+	<classpathentry kind="lib" path="lib/AppleJavaExtensions.jar"/>
+	<classpathentry kind="lib" path="lib/asm-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/asm-analysis-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/asm-commons-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/asm-tree-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/asm-util-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/asm-xml-3.3.jar"/>
+	<classpathentry kind="lib" path="lib/CaseStudySubject.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/jcip-annotations.jar"/>
+	<classpathentry kind="lib" path="lib/jdepend-2.9.jar"/>
+	<classpathentry kind="lib" path="lib/jFormatString.jar"/>
+	<classpathentry kind="lib" path="lib/jsr305.jar"/>
+	<classpathentry kind="lib" path="lib/STSgoals.jar"/>
+	<classpathentry kind="lib" path="lib/yjp-controller-api-redist.jar"/>
+	<classpathentry kind="lib" path="lib/jtidy-r938.jar"/>
+	<classpathentry kind="lib" path="lib/jsr173_1.0_api.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="lib/resolver.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.6.2.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.6.2.jar"/>
+	<classpathentry kind="lib" path="lib/xbean_xpath.jar"/>
+	<classpathentry kind="lib" path="lib/xbean.jar"/>
+	<classpathentry kind="lib" path="lib/xmlbeans-qname.jar"/>
+	<classpathentry kind="lib" path="lib/xmlpublic.jar"/>
+	<classpathentry kind="lib" path="/RTS-T11/bin"/>
+	<classpathentry kind="lib" path="/RTS-T25/bin" sourcepath="/RTS-T25/src"/>
+	<classpathentry kind="lib" path="/RTS-T25/lib/commons-codec-1.7.jar"/>
+	<classpathentry kind="lib" path="/RTS-T25/lib/commons-exec-1.1.jar"/>
+	<classpathentry kind="lib" path="/home/wliu/java/junit4.11/junit-4.11.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

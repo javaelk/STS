@@ -1,0 +1,10 @@
+#command to run. 
+DEPENDENCYFINDER_COMMAND=./DependencyFinder-1.2.1-beta4/bin/DependencyExtractor
+#output xml file(name and path). File will be created if does not exit, overwritten if already exist 
+OUTPUTFILE=/home/wliu/sir/workspace/dependencyFinder/result.xml
+#force timeout in ms
+JOBTIMEOUT=150000
+#environment variables required by Dependency Finder tool
+JAVA_HOME=/home/wliu/java/jdk1.6.0_26
+DEPENDENCYFINDER_HOME=./DependencyFinder-1.2.1-beta4
+DEPENDENCYFINDER_OPTS=-Xmx512m

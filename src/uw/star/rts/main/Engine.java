@@ -107,7 +107,7 @@ public class Engine {
 	 * Create path objects based on the files names given in the property file
 	 * @param properties
 	 */
-	static void getInputFiles(String propertyFilePath){
+	public static void getInputFiles(String propertyFilePath){
 		Properties properties = new Properties();
 		try{
 			properties.load(new FileInputStream(propertyFilePath));	
@@ -145,7 +145,7 @@ public class Engine {
 	/**
 	 * Module 2
 	 */
-	static List<Application> extractInfoFromRepository(Path CaseStudySubjectXMLFile){
+	public static List<Application> extractInfoFromRepository(Path CaseStudySubjectXMLFile){
 		log.info("2. == Extracting Information from Repository == ");
 
 		if(Files.notExists(CaseStudySubjectXMLFile)||Files.isDirectory(CaseStudySubjectXMLFile)){

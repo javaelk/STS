@@ -2,6 +2,7 @@ package uw.star.rts.main;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -38,6 +39,7 @@ public class EngineTest {
 
 	@Test
 	public void testExtractInfoFromRepository() {
+		Engine.getInputFiles("config"+File.separator+"ARTSConfiguration.property");
 		assertEquals("test extract from repository",4,Engine.extractInfoFromRepository(Paths.get("config/CaseStudySubject.xml")).size());
 	}
 

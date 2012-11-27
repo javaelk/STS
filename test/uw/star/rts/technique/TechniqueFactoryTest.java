@@ -1,6 +1,8 @@
 package uw.star.rts.technique;
 
 import static org.junit.Assert.*;
+
+import java.io.File;
 import java.nio.file.*;
 import java.util.*;
 
@@ -16,7 +18,7 @@ public class TechniqueFactoryTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		tf=new TechniqueFactory(Paths.get("config/STStechniques.xml"));
+		tf=new TechniqueFactory(Paths.get("test"+File.separator+"testfiles"+File.separator+"STStechniques_all.xml"));
 	}
 
 	@After
@@ -31,7 +33,7 @@ public class TechniqueFactoryTest {
 	@Test
 	public void testTechniquesModeling() {
 		List<Technique> techs = tf.techniquesModeling();
-		assertEquals("get all techniques from document", 2,techs.size());
+		assertEquals("get all techniques from document", 5,techs.size());
 		List<String> techNames = new ArrayList<>();
 		for(Technique tec: techs)
 			techNames.add(tec.getImplmentationName());

@@ -1,0 +1,5 @@
+actual,T25-Change based selection-null_precision,T25-CoverageAnalysisCost(ms),T25-ChangeAnalysisCost(ms),T25-ApplyTechniqueCost(ms),T25-TestExecutionCost(ms)
+apache-xml-security-v0,1.0,-1,-1,-1,-1
+apache-xml-security-v1,0.0,1006,6250,0,-1
+apache-xml-security-v2,0.0,111,6576,0,-1
+apache-xml-security-v3,0.0,99,6690,0,-1

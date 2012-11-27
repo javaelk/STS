@@ -16,6 +16,7 @@ import uw.star.rts.util.*;
 /**
  * An EMMA code coverage analyzer can 1)extract entites from Emma reports or
  * 2)extract coverage information &create trace object between entities in a program and a test suite 
+ * EmmaCodeCoverageAnalyzer is specific to a version of the program.
  * @author Weining Liu
  *
  */
@@ -274,7 +275,7 @@ public class EmmaCodeCoverageAnalyzer extends CodeCoverageAnalyzer {
 	}
 	
 	/**
-	 * For each version of the program, construct a trace matrix by going through all coverage result files of all test cases.
+	 * Construct a trace matrix by going through all coverage result files of all test cases.
 	 * 
 	 * A trace matrix of a particular type (class/method) is constructed by 
 	 *   1) extract all test cases of the version(same version as p) as the row of the matrix 

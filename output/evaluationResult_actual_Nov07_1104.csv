@@ -1,0 +1,10 @@
+actual,T25-Change based selection-null_precision,T25-CoverageAnalysisCost(ms),T25-ChangeAnalysisCost(ms),T25-ApplyTechniqueCost(ms),T25-TestExecutionCost(ms)
+apache-ant-v0,1.0,-1,-1,-1,-1
+apache-ant-v1,1.0,2307,411389,7,-1
+apache-ant-v2,0.8235294117647058,2080,330383,1,-1
+apache-ant-v3,0.5,608,27487,2,-1
+apache-ant-v4,0.5384615384615384,983,1128114,1,-1
+apache-ant-v5,0.27722772277227725,1686,625718,2,-1
+apache-ant-v6,0.20192307692307693,1336,49285,2,-1
+apache-ant-v7,0.26666666666666666,3456,2164599,2,-1
+apache-ant-v8,0.17333333333333334,2132,251897,1,-1

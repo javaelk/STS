@@ -1,0 +1,10 @@
+predicated,T25-Change based selection-null_precision,PredicatedAnalysisCost(ms),T25-PrecisionPredictionCost(ms),T25-AnalysisCostPredictionCost(ms),T25-Change based selection-null_precision,PredicatedAnalysisCost(ms),T25-PrecisionPredictionCost(ms),T25-AnalysisCostPredictionCost(ms),T25-Change based selection-null_precision,PredicatedAnalysisCost(ms),T25-PrecisionPredictionCost(ms),T25-AnalysisCostPredictionCost(ms)
+apache-ant-v0,0.6365546218487395,0,1290,0,0.6365546218487395,0,3198,0,0.6365546218487395,0,1327,0
+apache-ant-v1,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1
+apache-ant-v2,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1
+apache-ant-v3,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1
+apache-ant-v4,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1
+apache-ant-v5,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1
+apache-ant-v6,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1
+apache-ant-v7,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1
+apache-ant-v8,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1,0.6365546218487395,0,-1,-1

@@ -58,14 +58,26 @@ public class TestCaseSelection {
 		Charset charset = Charset.forName("UTF-8");
 		try(BufferedWriter writer = Files.newBufferedWriter(file,charset,StandardOpenOption.WRITE,StandardOpenOption.CREATE,StandardOpenOption.TRUNCATE_EXISTING)){
 			//write column headers
-			writer.write(",Total# of Applicable Test Cases,");
+			writer.write(",Total# of Test Cases in this version");
+			writer.write(",Total# of Test Cases in this version and also applicable to the next version(i.e. regression test cases),");
 			writer.write(tech.getID()+"-"+tech.getDescription()+"-"+tech.getImplmentationName());
 			writer.write("\n");
 
 			int totalNumVersions = testsubject.getTotalNumVersons();
 			for(int i=0;i<totalNumVersions;i++){
 				writer.write(appName+"-v"+i+",");
-				writer.write(testsubject.getTestSuite().getTestCaseByVersion(i).size()+",");
+				List<TestCase> testcases =testsubject.getTestSuite().getTestCaseByVersion(i); 
+				writer.write(testcases.size()+",");
+				int counter =0;
+				if(i<totalNumVersions-1){//not the last version
+					for(TestCase t: testcases)
+						if(t.isApplicabletoVersion(i+1))
+							counter++;
+					writer.write(counter+",");
+				}else{
+					writer.write("N/A,");
+				}
+
 				Program p = testsubject.getProgram(ProgramVariant.orig,i);
 				writer.write(selectedTC.get(p).size()+"\n");
 			}

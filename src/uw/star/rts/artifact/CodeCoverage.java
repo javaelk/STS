@@ -30,7 +30,7 @@ public class  CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
 	}
 	
 	/**
-	 * CC is the amount of cumulative coveage of achieved by T (i.e the interger
+	 * CC is the amount of cumulative coverage of achieved by T (i.e the integer
 	 * sum of the entries in the coverage matrix
 	 * 
 	 * @return
@@ -51,9 +51,9 @@ public class  CodeCoverage<E extends Entity> extends Trace<TestCase, E>{
 	
 	public List<E> getCoveredEntities(){
 		Set<E> results = new HashSet<>();
-		for(int j=0;j<column.size();j++){
+		for(int j=0;j<column.size();j++){//search column by column (for each entity) 
 			for(int i=0;i<row.size();i++){
-				if(links[i][j]>0){  //T covers E
+				if(links[i][j]>0){  //there is a test in i covers entity at j
 					results.add(column.get(j));
 					break;//don't need to search rest of the rows, jump to next column
 				}
