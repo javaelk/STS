@@ -40,6 +40,7 @@ public abstract class Technique {
 	
 	public abstract void setApplication(Application app);
 	
+	//return list of test cases selected from p that is applicable in pPrime for regression testing 
 	public abstract List<TestCase> selectTests(Program p,Program pPrime,StopWatch sw);
 	
 	public abstract double predictPrecision();

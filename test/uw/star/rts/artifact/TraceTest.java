@@ -20,32 +20,32 @@ public class TraceTest {
 	 * @uml.property  name="a"
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
-	TestCase a = new TestCase("tt",0,"a",null);
+	protected TestCase a = new TestCase("tt",0,"a",null);
 	/**
 	 * @uml.property  name="b"
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
-	TestCase b = new TestCase("tt",0,"b",null);
+	protected TestCase b = new TestCase("tt",0,"b",null);
 	/**
 	 * @uml.property  name="c"
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
-	TestCase c = new TestCase("tt",0,"c",null);
+	protected TestCase c = new TestCase("tt",0,"c",null);
 	/**
 	 * @uml.property  name="d"
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
-	TestCase d = new TestCase("tt",0,"d",null);
+	protected TestCase d = new TestCase("tt",0,"d",null);
 	/**
 	 * @uml.property  name="e"
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
-	TestCase e = new TestCase("tt",0,"e",null);
+	protected TestCase e = new TestCase("tt",0,"e",null);
 	/**
 	 * @uml.property  name="f"
 	 * @uml.associationEnd  multiplicity="(1 1)"
 	 */
-	TestCase f = new TestCase("tt",0,"f",null);
+	protected TestCase f = new TestCase("tt",0,"f",null);
 	/**
 	 * @uml.property  name="aa"
 	 * @uml.associationEnd  multiplicity="(0 -1)"

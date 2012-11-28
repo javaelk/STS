@@ -30,6 +30,14 @@ public class CodeCoverageTest extends TraceTest{
 	protected CodeCoverage codeCoverage;
 	protected List<TestCase> tca;
 	
+	/*    s1  s2  s3
+	 * a  x       x
+	 * b
+	 * c  x       x
+	 * d
+	 * e          x
+	 * f  x
+	 */
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
