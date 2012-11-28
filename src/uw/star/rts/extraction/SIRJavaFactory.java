@@ -249,10 +249,10 @@ public class SIRJavaFactory extends ArtifactFactory{
         			for(String n: parseTestCaseFile(file)){
 	        			TestCase tc = null;
 	        			if(!testcaseMap.containsKey(n)){
-		        			tc = new TestCase(applicationName,dirVer,n,file);
+		        			tc = new TestCase(applicationName,dirVer,n,file);//create test case &and set applicable version to dirVer
 	        			}else{
 	        				tc = testcaseMap.get(n);
-	        				tc.addApplicableVersions(dirVer);
+	        				tc.addApplicableVersion(dirVer);
 	        			}
         				testcaseMap.put(n, tc);
  	        		}

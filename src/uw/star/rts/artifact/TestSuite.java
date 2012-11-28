@@ -53,6 +53,18 @@ public class TestSuite extends Artifact{
 		  return results;
 	  }
 
+	  /**
+	   * get all test cases applicable to this version and the next version
+	   * @return all applicable regression test cases . If ver is the last version of the program, return empty list.  
+	   */
+	  public List<TestCase> getRegressionTestCasesByVersion(int ver){
+		  List<TestCase> results = new ArrayList<TestCase>();
+		  for(TestCase t: getTestCaseByVersion(ver))
+			  if(t.isApplicabletoVersion(ver+1))
+				  results.add(t);
+		  return results;
+	  }
+	  
 	  public int size(){
 		  return testcases.size();
 	  }

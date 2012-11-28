@@ -123,7 +123,7 @@ public class EmmaCodeCoverageAnalyzerTest {
 		analyzer.extractEntities(EntityType.STATEMENT);
 		Trace stmTrace = analyzer.createCodeCoverage(EntityType.STATEMENT);
 		stmTrace.serializeToCSVReversedRowCol(Paths.get("output","stmtrace.txt"));
-		assertEquals("total # of statements in array",8635,stmTrace.getColumns().size());
+		assertEquals("total # of statements in array",8630,stmTrace.getColumns().size());
 		assertEquals("total # of test cases in array",13,stmTrace.getRows().size());
 		assertEquals("test # of statements covered by t0",408,stmTrace.getLinkedEntitiesByRow(t0).size());
 		Trace stmCompressed = stmTrace.compressCoverageMatrix();

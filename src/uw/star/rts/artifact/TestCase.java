@@ -41,7 +41,7 @@ public class TestCase extends Artifact{
 		testCaseName = tcName;
 		testID = globalTestID++;
 		applicableVersions = new BitSet();
-		addApplicableVersions(v);
+		addApplicableVersion(v);
 	}
 	
 	/**
@@ -60,7 +60,7 @@ public class TestCase extends Artifact{
 		return testID;
 	}
 	
-	public void addApplicableVersions(int ver){
+	public void addApplicableVersion(int ver){
 		applicableVersions.set(ver); 
 	}
 	/**

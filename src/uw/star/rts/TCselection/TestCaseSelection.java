@@ -134,12 +134,15 @@ public class TestCaseSelection {
 	}
     
 	/**
-	 * Calculate precision of a version. Precision is the percentages of test cases selected from previous version for regression. 
+	 * Calculate precision of a version. Precision is the percentages of test cases selected from previous version for regression.
+	 * Test cases become obsolete in the new version should be removed prior to test selection. Therefore |T| represents
+	 * the regression test set of the previous version, which is the set of test cases applicable to current version.
+	 *    
 	 * Lower precision number indicates greater savings which is better. 
 	 * Since test cases new to this version are always need to be executed anyways,so they are not counted in the calculation
 	 * Formally, we define precision p as (|T'|/|T|)*100
 	 *    T' - test cases selected from previous version (should not include new test cases in this version)
-	 *    T - test cases in previous version
+	 *    T - test cases in previous version (should not include obsolete test cases in previous version
 	 * @param app
 	 * @param selectedTCforApp
 	 * @param i
@@ -148,7 +151,7 @@ public class TestCaseSelection {
 	static double calculatePrecision(Application app,Map<Program,List<TestCase>> selectedTCforApp,int currentVersion){
 		if(currentVersion==0) return 1.0; //1st version always selects everything	
 		
-		int sizeOfT = app.getTestSuite().getTestCaseByVersion(currentVersion-1).size(); // version should be equal to or great than 1 now
+		int sizeOfT = app.getTestSuite().getRegressionTestCasesByVersion(currentVersion-1).size(); // version should be equal to or great than 1 now
 		Program p = app.getProgram(ProgramVariant.orig, currentVersion);
 		int sizeOfTPrime =selectedTCforApp.get(p).size();
 		double percentageSelected = (sizeOfTPrime*1.0)/sizeOfT;

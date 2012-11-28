@@ -27,7 +27,7 @@ public class TechniqueFactoryTest {
 
 	@Test
 	public void testGetAllTechniques() {
-		assertEquals("get all techniques from document", 1,tf.getAllTechniques().size());
+		assertEquals("get all techniques from document", 2,tf.getAllTechniques().size());
 	}
 
 	@Test
